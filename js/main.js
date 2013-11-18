@@ -2,13 +2,16 @@
 (function(window, undefined) {
 	Board={};
 	Board.component=function(){}
-	Board.components={};
-	Board.circuit={};//holds positions of components
+	Board.components=[];
+	//holds positions of components
+	Board.circuit=function(){
+		
+	};
 	Board.circuit.prototype.Draw=function(){};
 	componentProperties={
 		symbol:"path/to/img.png",
 		name:"name",
-		components:new circuit(),
+		components:new Board.circuit(),
 		numberOfInputs:2,
 		output:function(){
 			
@@ -22,20 +25,20 @@
 				returnProperties[propertyKeys[i]]=properties[propertyKeys[i]];
 			}
 		}
-		return new returnProperties;
+		return returnProperties;
 	}
 	Board.component.prototype.Draw=function(){};
 	
 	//define basic gates
 	//
-	Board.componenents.push_back(new Board.component({
+	Board.components.push(new Board.component({
 		name:"not",
 		numberOfInputs:1,
 		output:function(input){
 			return !input;
 		}
 	}));
-	Board.componenents.push_back(new Board.component({
+	Board.components.push(new Board.component({
 		name:"and",
 		numberOfInputs:2,
 		output:function(input,input2){
@@ -43,7 +46,7 @@
 			return false;
 		}
 	}));
-	Board.componenents.push_back(new Board.component({
+	Board.components.push(new Board.component({
 		name:"or",
 		numberOfInputs:2,
 		output:function(input,input2){
