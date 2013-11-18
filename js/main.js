@@ -13,5 +13,24 @@
 			
 		}
 	}
+	Board.component=function(properties){
+		var returnProperties=componentProperties;
+		var propertyKeys=Object.keys(returnProperties);
+		for(var i=0;i<propertyKeys;i++){
+			if(typeof(properties[propertyKeys[i]])==typeof(returnProperties[propertyKeys[i]])){
+				returnProperties[propertyKeys[i]]=properties[propertyKeys[i]];
+			}
+		}
+		return new returnProperties;
+	}
 	Board.component.prototype.Draw=function(){};
+	
+	//define basic gates
+	//
+	Board.componenents.push_back(new Board.component({
+		name:"not",
+		output:function(input){
+			return !input;
+		}
+	}));
 })(window);
