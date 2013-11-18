@@ -33,4 +33,18 @@
 			return !input;
 		}
 	}));
+	Board.componenents.push_back(new Board.component({
+		name:"and",
+		output:function(input,input2){
+			if(input&&input2)return true;
+			return false;
+		}
+	}));
+	Board.componenents.push_back(new Board.component({
+		name:"or",
+		output:function(input,input2){
+			if(input|input2)return true;
+			return false;
+		}
+	}));
 })(window);
