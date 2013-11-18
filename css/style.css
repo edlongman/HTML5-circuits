@@ -1,4 +1,10 @@
+html{
+	width:100%;
+	height:100%;
+}
 body{
+	width:100%;
+	height:100%;
 	background: #CCCCCC;
 }
 body:before {
@@ -11,4 +17,15 @@ body:before {
    right:0;
    background:url('../img/noise.png') ;
    opacity:0.5;
+}
+
+.workspace{
+	width:100%;
+	height:90%;
+	background:#FFF;
+}
+.components{
+	width: 20%;
+	height:100%;
+	background:#BBB;
 }
