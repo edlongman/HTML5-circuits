@@ -9,6 +9,7 @@
 		symbol:"path/to/img.png",
 		name:"name",
 		components:new circuit(),
+		numberOfInputs:2,
 		output:function(){
 			
 		}
@@ -29,12 +30,14 @@
 	//
 	Board.componenents.push_back(new Board.component({
 		name:"not",
+		numberOfInputs:1,
 		output:function(input){
 			return !input;
 		}
 	}));
 	Board.componenents.push_back(new Board.component({
 		name:"and",
+		numberOfInputs:2,
 		output:function(input,input2){
 			if(input&&input2)return true;
 			return false;
@@ -42,6 +45,7 @@
 	}));
 	Board.componenents.push_back(new Board.component({
 		name:"or",
+		numberOfInputs:2,
 		output:function(input,input2){
 			if(input|input2)return true;
 			return false;
