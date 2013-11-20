@@ -1,11 +1,21 @@
 //One object to rule them all
 (function(window, undefined) {
 	Board={};
-	Board.component=function(){}
 	Board.components=[];
 	//holds positions of components
 	Board.circuit=function(){
-		
+		return {};
+	};
+	Board.circuit.prototype.addComponent=function(component){
+		this.push(component);
+	};
+	Board.circuit.prototype.addConnector=function(from,to){
+		//check from and to
+		if(from.type==to.type){
+			//can't draw that line
+			return false;
+		}
+		from.connect(to);
 	};
 	Board.circuit.prototype.Draw=function(){};
 	componentProperties={
@@ -17,6 +27,7 @@
 			
 		}
 	}
+	Board.component=function(){}
 	Board.component=function(properties){
 		var returnProperties=componentProperties;
 		var propertyKeys=Object.keys(returnProperties);
