@@ -23,6 +23,7 @@
 		name:"name",
 		components:new Board.circuit(),
 		numberOfInputs:2,
+		numberOfOutputs:1,
 		output:function(){
 			
 		}
@@ -35,6 +36,14 @@
 			if(typeof(properties[propertyKeys[i]])==typeof(returnProperties[propertyKeys[i]])){
 				returnProperties[propertyKeys[i]]=properties[propertyKeys[i]];
 			}
+		}
+		returnProperties.inputs={};
+		for(var i=0;i<returnProperties.numberOfInputs;i++){
+			returnProperties.push(new Board.input());
+		}
+		returnProperties.outputs={};
+		for(var i=0;i<returnProperties.numberOfOutputs;i++){
+			returnProperties.push(new Board.output());
 		}
 		return returnProperties;
 	}
