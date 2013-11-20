@@ -39,6 +39,19 @@
 		return returnProperties;
 	}
 	Board.component.prototype.Draw=function(){};
+	Board.output=function(){
+		return {};
+	}
+	Board.output.prototype.connect(to){
+		to.connect(this);
+		this.push(to);
+	}
+	Board.input=function(){
+		return this;
+	}
+	Board.input.prototype.connect(from){
+		this=from;
+	}
 	
 	//define basic gates
 	//
