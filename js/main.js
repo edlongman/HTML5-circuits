@@ -2,6 +2,7 @@
 (function(window, undefined) {
 	Board={};
 	Board.components=[];
+	
 	//holds positions of components
 	Board.circuit=function(){
 		return {};
@@ -17,7 +18,9 @@
 		}
 		from.connect(to);
 	};
-	Board.circuit.prototype.Draw=function(){};
+	Board.circuit.prototype.Draw=function(){
+		
+	};
 	componentProperties={
 		symbol:"path/to/img.png",
 		name:"name",
