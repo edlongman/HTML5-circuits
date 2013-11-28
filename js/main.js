@@ -25,7 +25,17 @@
 		from.connect(to);
 	};
 	Board.circuit.prototype.Draw=function(domElement){
-		this.domElement=domElement;
+		components=$(domElement).find("div");
+		lines=$(domElement).find("svg");
+		lines.html("");
+		lines.html("");
+		for(var i;i<this.length;i++){
+			component=$("<div/>").addClass("component").css({
+				"left":this[i].x,
+				"top":this[i].y
+			});
+			domElement.append(component);
+		}
 	};
 	componentProperties={
 		symbol:"path/to/img.png",
@@ -48,18 +58,19 @@
 		}
 		returnProperties.inputs=[];
 		for(var i=0;i<returnProperties.numberOfInputs;i++){
-			returnProperties.inputs.push(new Board.input());
+			returnProperties.inputs.push(new Board.input(this));
 		}
 		returnProperties.outputs=[];
 		for(var i=0;i<returnProperties.numberOfOutputs;i++){
-			returnProperties.outputs.push(new Board.output());
+			returnProperties.outputs.push(new Board.output(this));
 		}
 		return returnProperties;
 	}
 	Board.component.prototype.Draw=function(){};
 	
 	//output port of component
-	Board.output=function(){
+	Board.output=function(parent){
+		this.parent=parent;
 		return {};
 	}
 	Board.output.prototype.connect=function(to){
@@ -68,7 +79,8 @@
 	}
 	
 	//input port of component
-	Board.input=function(){
+	Board.input=function(parent){
+		this.parent=parent;
 		return this;
 	}
 	Board.input.prototype.connect=function(from){
