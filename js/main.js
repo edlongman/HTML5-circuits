@@ -5,7 +5,7 @@
 	
 	//holds positions of components
 	Board.circuit=function(components){
-		if(typeof(components)=="object"&&components.toString!="object Object"){
+		if(typeof(components)=="object"&&components.toString!="[object Object]"){
 			for(var i=0;i<components.length;i++){
 				this[i]=components[i];
 			}
