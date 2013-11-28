@@ -7,6 +7,10 @@ body{
 	height:100%;
 	background: #CCCCCC;
 }
+*{
+	margin:0px;
+	padding:0px;
+}
 body:before {
    content:"";
    position:absolute;
@@ -25,7 +29,15 @@ body:before {
 	background:#FFF;
 }
 .components{
-	width: 20%;
+	width: 19%;
 	height:100%;
 	background:#BBB;
+	display:inline-block;
+}
+
+.board{
+	width: 80%;
+	height:100%;
+	background:#BBB;
+	display:inline-block;
 }
