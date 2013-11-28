@@ -25,16 +25,16 @@
 		from.connect(to);
 	};
 	Board.circuit.prototype.Draw=function(domElement){
-		components=$(domElement).find("div");
-		lines=$(domElement).find("svg");
-		lines.html("");
+		var components=$(domElement).find("div");
+		var lines=$(domElement).find("svg");
+		components.html("");
 		lines.html("");
 		for(var i;i<this.length;i++){
 			component=$("<div/>").addClass("component").css({
 				"left":this[i].x,
 				"top":this[i].y
 			});
-			domElement.append(component);
+			cmoponents.append(component);
 		}
 	};
 	componentProperties={
