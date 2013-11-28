@@ -4,8 +4,15 @@
 	Board.components=[];
 	
 	//holds positions of components
-	Board.circuit=function(){
-		return {};
+	Board.circuit=function(domElement,components){
+		this.domElement=domElement;
+		if(typeof(components)=="object"&&components.toString!="object Object"){
+			for(var i=0;i<components.length;i++){
+				this[i]=components[i];
+			}
+		}
+		
+		return this;
 	};
 	Board.circuit.prototype.addComponent=function(component){
 		this.push(component);
