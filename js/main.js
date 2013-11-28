@@ -24,6 +24,10 @@
 		}
 		from.connect(to);
 	};
+	//doesn't let the value go below minimum
+	function minimum(min,arg){
+		return (min<arg)?arg:min;
+	}
 	Board.circuit.prototype.Draw=function(domElement){
 		var components=$(domElement).find("div");
 		var lines=$(domElement).find("svg");
@@ -34,7 +38,20 @@
 				"left":this[i].x,
 				"top":this[i].y
 			});
-			cmoponents.append(component);
+			components.append(component);
+			for(var ii=0;ii<this[i].inputs.length;ii++){
+				//draw line from this to other component
+				var fromX=inputs[i].parent.x,
+					fromY=inputs[i].parent.y,
+					toX=this.x,
+					toY=this.y;
+				var control1=fromX+minimum(40,floor((fromY-fromX)/3));
+				var control2=toX-minimum(40,floor((fromY-fromX)/3));
+				var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+					lineArg+=control2+","+toY+" "+toX+","+toY;
+				line=$("<line class='connector' d='"+lineArg+"'>");
+				lines.append(line);
+			}
 		}
 	};
 	componentProperties={
@@ -71,7 +88,7 @@
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
-		return {};
+		return [];
 	}
 	Board.output.prototype.connect=function(to){
 		to.connect(this);
@@ -84,7 +101,7 @@
 		return this;
 	}
 	Board.input.prototype.connect=function(from){
-		this=from;
+		this.pair=from;
 	}
 	
 	//define basic gates
