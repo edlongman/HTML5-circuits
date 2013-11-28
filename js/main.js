@@ -4,8 +4,7 @@
 	Board.components=[];
 	
 	//holds positions of components
-	Board.circuit=function(domElement,components){
-		this.domElement=domElement;
+	Board.circuit=function(components){
 		if(typeof(components)=="object"&&components.toString!="object Object"){
 			for(var i=0;i<components.length;i++){
 				this[i]=components[i];
@@ -25,8 +24,8 @@
 		}
 		from.connect(to);
 	};
-	Board.circuit.prototype.Draw=function(){
-		
+	Board.circuit.prototype.Draw=function(domElement){
+		this.domElement=domElement;
 	};
 	componentProperties={
 		symbol:"path/to/img.png",
