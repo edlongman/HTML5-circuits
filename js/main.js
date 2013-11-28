@@ -47,28 +47,32 @@
 				returnProperties[propertyKeys[i]]=properties[propertyKeys[i]];
 			}
 		}
-		returnProperties.inputs={};
+		returnProperties.inputs=[];
 		for(var i=0;i<returnProperties.numberOfInputs;i++){
-			returnProperties.push(new Board.input());
+			returnProperties.inputs.push(new Board.input());
 		}
-		returnProperties.outputs={};
+		returnProperties.outputs=[];
 		for(var i=0;i<returnProperties.numberOfOutputs;i++){
-			returnProperties.push(new Board.output());
+			returnProperties.outputs.push(new Board.output());
 		}
 		return returnProperties;
 	}
 	Board.component.prototype.Draw=function(){};
+	
+	//output port of component
 	Board.output=function(){
 		return {};
 	}
-	Board.output.prototype.connect(to){
+	Board.output.prototype.connect=function(to){
 		to.connect(this);
 		this.push(to);
 	}
+	
+	//input port of component
 	Board.input=function(){
 		return this;
 	}
-	Board.input.prototype.connect(from){
+	Board.input.prototype.connect=function(from){
 		this=from;
 	}
 	
