@@ -11,7 +11,7 @@
 			}
 		}
 		
-		return this;
+		return [];
 	};
 	Board.circuit.prototype.addComponent=function(component){
 		this.push(component);
@@ -60,6 +60,8 @@
 		components:new Board.circuit(),
 		numberOfInputs:2,
 		numberOfOutputs:1,
+		x:0,
+		y:0,
 		output:function(){
 			
 		}
