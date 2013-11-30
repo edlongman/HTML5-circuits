@@ -5,16 +5,16 @@
 	
 	//holds positions of components
 	Board.circuit=function(components){
+		this.parts=[];
 		if(typeof(components)=="object"&&components.toString!="[object Object]"){
 			for(var i=0;i<components.length;i++){
-				this[i]=components[i];
+				this.parts[i]=components[i];
 			}
 		}
-		
-		return [];
+		return this;
 	};
 	Board.circuit.prototype.addComponent=function(component){
-		this.push(component);
+		this.parts.push(component);
 	};
 	Board.circuit.prototype.addConnector=function(from,to){
 		//check from and to
@@ -68,29 +68,31 @@
 	}
 	Board.component=function(){}
 	Board.component=function(properties){
-		var returnProperties=componentProperties;
-		var propertyKeys=Object.keys(returnProperties);
+		var propertyKeys=Object.keys(componentProperties);
 		for(var i=0;i<propertyKeys;i++){
-			if(typeof(properties[propertyKeys[i]])==typeof(returnProperties[propertyKeys[i]])){
-				returnProperties[propertyKeys[i]]=properties[propertyKeys[i]];
+			if(typeof(properties[propertyKeys[i]])==typeof(this[propertyKeys[i]])){
+				this[propertyKeys[i]]=properties[propertyKeys[i]];
+			}
+			else{
+				this[propertyKeys[i]]=componentProperties[propertyKeys[i]];
 			}
 		}
-		returnProperties.inputs=[];
-		for(var i=0;i<returnProperties.numberOfInputs;i++){
-			returnProperties.inputs.push(new Board.input(this));
+		this.inputs=[];
+		for(var i=0;i<this.numberOfInputs;i++){
+			this.inputs.push(new Board.input(this));
 		}
-		returnProperties.outputs=[];
-		for(var i=0;i<returnProperties.numberOfOutputs;i++){
-			returnProperties.outputs.push(new Board.output(this));
+		this.outputs=[];
+		for(var i=0;i<this.numberOfOutputs;i++){
+			this.outputs.push(new Board.output(this));
 		}
-		return returnProperties;
+		return this;
 	}
 	Board.component.prototype.Draw=function(){};
 	
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
-		return [];
+		return this;
 	}
 	Board.output.prototype.connect=function(to){
 		to.connect(this);
@@ -131,4 +133,30 @@
 			return false;
 		}
 	}));
+	
+	
+	
+	
+	var testCircuit=new Board.circuit();
+	var test1=new Board.component({
+			name:"test1",
+			x:30,
+			y:50
+		}),
+		test2=new Board.component({
+			name:"test2",
+			x:200,
+			y:50
+		}),
+		test3=new Board.component({
+			name:"test3",
+			x:250,
+			y:80
+		});
+	testCircuit.addComponent(test1);
+	testCircuit.addComponent(test2);
+	testCircuit.addComponent(test3);
+	test1.outputs[0].connect(test2.inputs[0]);
+	test2.outputs[1].connect(test3.inputs[0]);
+	
 })(window);
