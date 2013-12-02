@@ -41,3 +41,8 @@ body:before {
 	background:#BBB;
 	display:inline-block;
 }
+.connector{
+	stroke:black;
+	stroke-width:4;
+	fill:none;
+}
