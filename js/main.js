@@ -33,23 +33,24 @@
 		var lines=$(domElement).find("svg");
 		components.html("");
 		lines.html("");
-		for(var i;i<this.length;i++){
+		for(var i=0;i<this.parts.length;i++){
+			var componentObj=this.parts[i];
 			component=$("<div/>").addClass("component").css({
-				"left":this[i].x,
-				"top":this[i].y
+				"left":componentObj.x,
+				"top":componentObj.y
 			});
 			components.append(component);
-			for(var ii=0;ii<this[i].inputs.length;ii++){
+			for(var ii=0;ii<componentObj.inputs.length;ii++){
 				//draw line from this to other component
-				var fromX=inputs[i].parent.x,
-					fromY=inputs[i].parent.y,
-					toX=this.x,
-					toY=this.y;
-				var control1=fromX+minimum(40,floor((fromY-fromX)/3));
-				var control2=toX-minimum(40,floor((fromY-fromX)/3));
-				var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
-					lineArg+=control2+","+toY+" "+toX+","+toY;
-				line=$("<line class='connector' d='"+lineArg+"'>");
+				var fromX=componentObj.inputs[ii].parent.x,
+					fromY=componentObj.inputs[ii].parent.y,
+					toX=componentObj.x,
+					toY=componentObj.y;
+				var control1=fromX+minimum(40,Math.floor((fromY-fromX)/3));
+				var control2=toX-minimum(40,Math.floor((fromY-fromX)/3));
+				var lineArg="M "+fromX+" "+fromY+" C "+control1+" "+fromY+" ";
+					lineArg+=control2+" "+toY+" "+toX+" "+toY;
+				line=$("<path class='connector' d='"+lineArg+"'>");
 				lines.append(line);
 			}
 		}
@@ -161,5 +162,6 @@
 	testCircuit.addComponent(test3);
 	test1.outputs[0].connect(test2.inputs[0]);
 	test2.outputs[0].connect(test3.inputs[0]);
+	testCircuit.Draw($(".board")[0]);
 	
 })(window);
