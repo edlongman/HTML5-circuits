@@ -69,7 +69,8 @@
 	Board.component=function(){}
 	Board.component=function(properties){
 		var propertyKeys=Object.keys(componentProperties);
-		for(var i=0;i<propertyKeys;i++){
+		for(var i=0;i<propertyKeys.length;i++){
+			this[propertyKeys[i]]=componentProperties[propertyKeys[i]];
 			if(typeof(properties[propertyKeys[i]])==typeof(this[propertyKeys[i]])){
 				this[propertyKeys[i]]=properties[propertyKeys[i]];
 			}
@@ -92,11 +93,13 @@
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
+		this.length=0;
 		return this;
 	}
 	Board.output.prototype.connect=function(to){
 		to.connect(this);
-		this.push(to);
+		this[this.length]=to;
+		this.length++;
 	}
 	
 	//input port of component
@@ -157,6 +160,6 @@
 	testCircuit.addComponent(test2);
 	testCircuit.addComponent(test3);
 	test1.outputs[0].connect(test2.inputs[0]);
-	test2.outputs[1].connect(test3.inputs[0]);
+	test2.outputs[0].connect(test3.inputs[0]);
 	
 })(window);
