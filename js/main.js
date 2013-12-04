@@ -158,13 +158,13 @@
 		}),
 		test2=new Board.component({
 			name:"test2",
-			x:200,
-			y:50
+			x:300,
+			y:250
 		}),
 		test3=new Board.component({
 			name:"test3",
 			x:250,
-			y:80
+			y:400
 		});
 	testCircuit.addComponent(test1);
 	testCircuit.addComponent(test2);
