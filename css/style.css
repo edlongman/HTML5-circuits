@@ -28,11 +28,22 @@ body:before {
 	height:90%;
 	background:#FFF;
 }
+.boxes{
+	height:0px;
+	position:relative;
+}
 .components{
 	width: 19%;
 	height:100%;
 	background:#BBB;
 	display:inline-block;
+}
+.component{
+	position:absolute;
+	height: 40px;
+	width:120px;
+	display:block;
+	background: rgba(255,200,50,0.5);
 }
 
 .board{
