@@ -78,7 +78,7 @@
 		});
 		boxes.append(this.dom);
 		for(var i=0;i<this.inputs.length;i++){
-			this.inputs[ii].Draw(lines,this.dom);
+			this.inputs[i].Draw(lines,this.dom);
 		}};
 	
 	//output port of component
