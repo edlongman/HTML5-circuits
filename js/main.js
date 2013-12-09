@@ -1,5 +1,6 @@
 //One object to rule them all
 (function(window, undefined) {
+	$(".linescontainer").svg()
 	Board={};
 	Board.components=[];
 	
@@ -30,10 +31,8 @@
 	}
 	Board.circuit.prototype.Draw=function(domElement){
 		var components=$(domElement).find("div");
-		var lines=$(domElement).find("svg");
-		var svgns=lines[0].xmlns;
+		var lines=$(".linescontainer").svg("get");
 		components.html("");
-		lines.html("");
 		for(var i=0;i<this.parts.length;i++){
 			var componentObj=this.parts[i];
 			component=$("<div/>").addClass("component").css({
@@ -54,15 +53,17 @@
 						lineArg+=control2+","+toY+" "+toX+","+toY;
 					//this basically adds a line but jQuery doesn't work well with SVG so is a bit of a hack
 					//http://stackoverflow.com/questions/6698480/
-					line=document.createElementNS(svgns,"path");
-					line.setAttributeNS(null,"class","connector");
-					line.setAttributeNS(null,"d",lineArg);
-					lines[0].appendChild(line);
+					var line=lines.createPath();
+					line.move(fromX,fromY);
+					line.curveC(control1,fromY,control2,toY,toX,toY);
+					lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 				}
 			}
 		}
 		//this hack is to fix the fact that for some reason unbeknown to me currently it wouldn't show
-		lines[0].innerHTML=lines.html();
+		//lines=lines[0];
+		//lines[0].parentNode.appendChild(lines[0]);
+		//lines[0].innerHTML=lines.html();
 	};
 	componentProperties={
 		symbol:"path/to/img.png",
