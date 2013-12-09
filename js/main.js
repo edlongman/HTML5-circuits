@@ -78,21 +78,7 @@
 		});
 		boxes.append(this.dom);
 		for(var ii=0;ii<this.inputs.length;ii++){
-			if(this.inputs[ii].pair!=undefined&&this.inputs[ii].pair.parent!=undefined){
-				//draw line from this to other component
-				var fromX=this.inputs[ii].pair.parent.x,
-					fromY=this.inputs[ii].pair.parent.y,
-					toX=this.x,
-					toY=this.y;
-				var control1=fromX+minimum(40,Math.floor((toX-fromX)/3));
-				var control2=toX-minimum(40,Math.floor((toX-fromX)/3));
-				var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
-					lineArg+=control2+","+toY+" "+toX+","+toY;
-				var line=lines.createPath();
-				line.move(fromX,fromY);
-				line.curveC(control1,fromY,control2,toY,toX,toY);
-				lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
-			}
+			this.inputs[ii].Draw(lines,this.dom);
 		}};
 	
 	//output port of component
@@ -114,6 +100,23 @@
 	}
 	Board.input.prototype.connect=function(from){
 		this.pair=from;
+	}
+	Board.input.prototype.Draw=function(lines,componentDom){
+		if(this.pair!=undefined&&this.pair.parent!=undefined){
+			//draw line from this to other component
+			var fromX=this.pair.parent.x,
+				fromY=this.pair.parent.y,
+				toX=this.parent.x,
+				toY=this.parent.y;
+			var control1=fromX+minimum(40,Math.floor((toX-fromX)/3));
+			var control2=toX-minimum(40,Math.floor((toX-fromX)/3));
+			var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+				lineArg+=control2+","+toY+" "+toX+","+toY;
+			var line=lines.createPath();
+			line.move(fromX,fromY);
+			line.curveC(control1,fromY,control2,toY,toX,toY);
+			lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
+		}
 	}
 	
 	//define basic gates
