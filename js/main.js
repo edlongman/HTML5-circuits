@@ -77,7 +77,7 @@
 			"top":this.y
 		});
 		boxes.append(this.dom);
-		for(var ii=0;ii<this.inputs.length;ii++){
+		for(var i=0;i<this.inputs.length;i++){
 			this.inputs[ii].Draw(lines,this.dom);
 		}};
 	
