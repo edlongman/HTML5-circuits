@@ -34,36 +34,8 @@
 		var lines=$(".linescontainer").svg("get");
 		components.html("");
 		for(var i=0;i<this.parts.length;i++){
-			var componentObj=this.parts[i];
-			component=$("<div/>").addClass("component").css({
-				"left":componentObj.x,
-				"top":componentObj.y
-			});
-			components.append(component);
-			for(var ii=0;ii<componentObj.inputs.length;ii++){
-				if(componentObj.inputs[ii].pair!=undefined&&componentObj.inputs[ii].pair.parent!=undefined){
-					//draw line from this to other component
-					var fromX=componentObj.inputs[ii].pair.parent.x,
-						fromY=componentObj.inputs[ii].pair.parent.y,
-						toX=componentObj.x,
-						toY=componentObj.y;
-					var control1=fromX+minimum(40,Math.floor((toX-fromX)/3));
-					var control2=toX-minimum(40,Math.floor((toX-fromX)/3));
-					var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
-						lineArg+=control2+","+toY+" "+toX+","+toY;
-					//this basically adds a line but jQuery doesn't work well with SVG so is a bit of a hack
-					//http://stackoverflow.com/questions/6698480/
-					var line=lines.createPath();
-					line.move(fromX,fromY);
-					line.curveC(control1,fromY,control2,toY,toX,toY);
-					lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
-				}
-			}
+			this.parts[i].Draw(components,lines);
 		}
-		//this hack is to fix the fact that for some reason unbeknown to me currently it wouldn't show
-		//lines=lines[0];
-		//lines[0].parentNode.appendChild(lines[0]);
-		//lines[0].innerHTML=lines.html();
 	};
 	componentProperties={
 		symbol:"path/to/img.png",
@@ -99,7 +71,29 @@
 		}
 		return this;
 	}
-	Board.component.prototype.Draw=function(){};
+	Board.component.prototype.Draw=function(boxes,lines){
+		this.dom=$("<div/>").addClass("component").css({
+			"left":this.x,
+			"top":this.y
+		});
+		boxes.append(this.dom);
+		for(var ii=0;ii<this.inputs.length;ii++){
+			if(this.inputs[ii].pair!=undefined&&this.inputs[ii].pair.parent!=undefined){
+				//draw line from this to other component
+				var fromX=this.inputs[ii].pair.parent.x,
+					fromY=this.inputs[ii].pair.parent.y,
+					toX=this.x,
+					toY=this.y;
+				var control1=fromX+minimum(40,Math.floor((toX-fromX)/3));
+				var control2=toX-minimum(40,Math.floor((toX-fromX)/3));
+				var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+					lineArg+=control2+","+toY+" "+toX+","+toY;
+				var line=lines.createPath();
+				line.move(fromX,fromY);
+				line.curveC(control1,fromY,control2,toY,toX,toY);
+				lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
+			}
+		}};
 	
 	//output port of component
 	Board.output=function(parent){
