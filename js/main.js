@@ -67,9 +67,24 @@
 		for(var i=0;i<this.numberOfInputs;i++){
 			this.inputs.push(new Board.input(this));
 		}
+		this.inputs.Draw=function(lines,componentDom,drawNo){
+			if(this.lastDraw==drawNo)return;
+			this.lastDraw=drawNo;
+			//draw node
+			var connectionNode=$("<div/>").addClass("inputNode");
+			componentDom.append(connectionNode);
+			for(var i=0;i<this.length;i++){
+				this[i].Draw(lines,componentDom,drawNo);
+			}
+		}
 		this.outputs=[];
 		for(var i=0;i<this.numberOfOutputs;i++){
 			this.outputs.push(new Board.output(this));
+		}
+		this.outputs.Draw=function(lines,componentDom,drawNo){
+			//draw node
+			var connectionNode=$("<div/>").addClass("outputNode");
+			componentDom.append(connectionNode);
 		}
 		return this;
 	}
@@ -81,9 +96,9 @@
 			"top":this.y
 		});
 		boxes.append(this.dom);
-		for(var i=0;i<this.inputs.length;i++){
-			this.inputs[i].Draw(lines,this.dom,drawNo);
-		}};
+		this.inputs.Draw(lines,this.dom,drawNo);
+		this.outputs.Draw(lines,this.dom,drawNo);
+	};
 	Board.component.prototype.lastDraw=0;
 	//output port of component
 	Board.output=function(parent){
@@ -103,9 +118,6 @@
 		var outputNo=this.parent.outputs.indexOf(this);
 		return this.parent.y+20+outputNo*20;
 	}
-	Board.output.prototype.Draw=function(){
-		
-	}
 	
 	//input port of component
 	Board.input=function(parent){
@@ -123,8 +135,8 @@
 		return this.parent.y+20+inputNo*20;
 	}
 	Board.input.prototype.Draw=function(lines,componentDom,drawNo){
-		if(this.lastDraw==drawNo)return;
-		this.lastDraw=drawNo;
+		
+		//draw connection
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
 			//init draw of other component
 			this.pair.parent.Draw(lines,componentDom,drawNo);
