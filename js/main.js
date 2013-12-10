@@ -74,10 +74,10 @@
 			if(this.lastDraw==drawNo)return;
 			this.lastDraw=drawNo;
 			//draw node
-			var connectionNode=$("<div/>").addClass("inputNode");
-			componentDom.append(connectionNode);
+			var connectionNodes=$("<div/>").addClass("inputNodes");
+			componentDom.append(connectionNodes);
 			for(var i=0;i<this.length;i++){
-				this[i].Draw(lines,componentDom,drawNo);
+				this[i].Draw(lines,componentDom,connectionNodes,drawNo);
 			}
 		}
 		this.inputs.Update=function(){
@@ -89,8 +89,16 @@
 		}
 		this.outputs.Draw=function(lines,componentDom,drawNo){
 			//draw node
-			var connectionNode=$("<div/>").addClass("outputNode");
-			componentDom.append(connectionNode);
+			var connectionNodes=$("<div/>").addClass("outputNodes");
+			componentDom.append(connectionNodes);
+			for(var i=0;i<this.length;i++){
+				this[i].Draw(lines,componentDom,connectionNodes,drawNo);
+			}
+		}
+		this.outputs.Update=function(lastDraw){
+			for(var i=0;i<this.length;i++){
+				this[i].Update(lastDraw);
+			}
 		}
 		return this;
 	}
@@ -154,6 +162,16 @@
 		var outputNo=this.parent.outputs.indexOf(this);
 		return this.parent.y+20+outputNo*20;
 	}
+	Board.output.prototype.Draw=function(lines,componentDom,outputsDom,drawNo){
+		//draw node
+		var connectionNode=$("<div/>").addClass("outputNode");
+		outputsDom.append(connectionNode);
+	}
+	Board.output.prototype.Update=function(lastDraw){
+		for(var i=0;i<this.length;i++){
+			this[i].Update(lastDraw);
+		}
+	}
 	
 	//input port of component
 	Board.input=function(parent){
@@ -170,7 +188,10 @@
 		var inputNo=this.parent.inputs.indexOf(this);
 		return this.parent.y+20+inputNo*20;
 	}
-	Board.input.prototype.Draw=function(lines,componentDom,drawNo){
+	Board.input.prototype.Draw=function(lines,componentDom,inputsDom,drawNo){
+		//draw node
+		var connectionNode=$("<div/>").addClass("inputNode");
+		inputsDom.append(connectionNode);
 		
 		//draw connection
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
@@ -189,9 +210,30 @@
 			var line=lines.createPath();
 			line.move(fromX,fromY);
 			line.curveC(control1,fromY,control2,toY,toX,toY);
-			lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
+			this.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 		}
 	}
+	Board.input.prototype.Update=function(lastDraw){
+		//update connection
+		if(this.pair!=undefined&&this.pair.parent!=undefined){
+			//init draw of other component
+			this.pair.parent.Update(lastDraw);
+			
+			//draw line from this to other component
+			var fromX=this.pair.x(),
+				fromY=this.pair.y(),
+				toX=this.x(),
+				toY=this.y();
+			var control1=fromX+minimum(150,Math.floor((toX-fromX)/3));
+			var control2=toX-minimum(150,Math.floor((toX-fromX)/3));
+			var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+				lineArg+=control2+","+toY+" "+toX+","+toY;
+			var line=this.parent.parent.lines.createPath();
+			line.move(fromX,fromY);
+			line.curveC(control1,fromY,control2,toY,toX,toY);
+			this.dom.setAttribute("d",line._path);
+		}
+	};
 	Board.input.prototype.lastDraw=0;
 	
 	//define basic gates

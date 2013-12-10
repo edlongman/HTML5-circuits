@@ -40,10 +40,15 @@ body:before {
 }
 .component{
 	position:absolute;
-	height: 40px;
 	width:120px;
 	display:block;
 	background: rgba(255,200,50,0.5);
+}
+.inputNodes,.outputNodes{
+	display: inline-block;
+}
+.outputNodes{
+	float:right;
 }
 .inputNode,.outputNode{
 	box-sizing:border-box;
@@ -52,7 +57,7 @@ body:before {
 	width:20px;
 	background:-webkit-radial-gradient(50% 80%,#FFAAAA,#FF7700);
 	-webkit-border-radius:10px;
-	display:inline-block;
+	display:block;
 }
 .outputNode{
 	float: right;
