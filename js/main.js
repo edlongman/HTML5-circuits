@@ -80,8 +80,10 @@
 				this[i].Draw(lines,componentDom,connectionNodes,drawNo);
 			}
 		}
-		this.inputs.Update=function(){
-			
+		this.inputs.Update=function(lastDraw){
+			for(var i=0;i<this.length;i++){
+				this[i].Update(lastDraw);
+			}
 		}
 		this.outputs=[];
 		for(var i=0;i<this.numberOfOutputs;i++){
@@ -135,14 +137,16 @@
 		this.outputs.Draw(lines,this.dom,drawNo);
 	};
 	Board.component.prototype.lastDraw=0;
-	Board.component.prototype.Update=function(){
-		this.parent.drawIterator++;
-		this.lastDraw=this.parent.lastIterator;
+	Board.component.prototype.Update=function(lastDraw){
+		if(lastDraw!=undefined&&this.lastDraw==lastDraw)return;
+		if(lastDraw!=undefined)this.parent.drawIteration++;
+		this.lastDraw=this.parent.drawIteration;
 		this.dom.css({
 			"left":this.x,
 			"top":this.y
 		})
-		this.inputs.Update();
+		this.inputs.Update(this.lastDraw);
+		this.outputs.Update(this.lastDraw);
 	};
 	//output port of component
 	Board.output=function(parent){
