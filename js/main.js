@@ -80,6 +80,9 @@
 				this[i].Draw(lines,componentDom,drawNo);
 			}
 		}
+		this.inputs.Update=function(){
+			
+		}
 		this.outputs=[];
 		for(var i=0;i<this.numberOfOutputs;i++){
 			this.outputs.push(new Board.output(this));
@@ -100,18 +103,22 @@
 		});
 		boxes.append(this.dom);
 		this.dom.mousedown(this,function(e){
-			obj=e.data;
+			var obj=e.data;
 			obj.clickOffsetX=e.offsetX;
 			obj.clickOffsetY=e.offsetY;
 			obj.parent.componentsDom.parent().mousemove(obj,function(e) {
-				obj=e.data;
+				var obj=e.data;
+				if(e.target==obj.dom[0]){
+					e.offsetX=e.offsetX+obj.x;
+					e.offsetY=e.offsetY+obj.y;
+				}
 				obj.x=e.offsetX-obj.clickOffsetX;
 				obj.y=e.offsetY-obj.clickOffsetY;
 				obj.Update();
 			});
 		});
 		this.parent.componentsDom.parent().mouseup(this,function(e){
-			obj=e.data;
+			var obj=e.data;
 			$(this).unbind("mousemove");
 			obj.clickOffsetX=undefined;
 			obj.clickOffsetY=undefined;
@@ -127,6 +134,7 @@
 			"left":this.x,
 			"top":this.y
 		})
+		this.inputs.Update();
 	};
 	//output port of component
 	Board.output=function(parent){
