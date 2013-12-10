@@ -92,6 +92,16 @@
 		this[this.length]=to;
 		this.length++;
 	}
+	Board.output.prototype.x=function(){
+		return this.parent.x+100;
+	}
+	Board.output.prototype.y=function(){
+		var outputNo=this.parent.outputs.indexOf(this);
+		return this.parent.y+20+outputNo*20;
+	}
+	Board.output.prototype.Draw=function(){
+		
+	}
 	
 	//input port of component
 	Board.input=function(parent){
@@ -101,15 +111,27 @@
 	Board.input.prototype.connect=function(from){
 		this.pair=from;
 	}
-	Board.input.prototype.Draw=function(lines,componentDom){
+	Board.input.prototype.x=function(){
+		return this.parent.x+20;
+	}
+	Board.input.prototype.y=function(){
+		var inputNo=this.parent.inputs.indexOf(this);
+		return this.parent.y+20+inputNo*20;
+	}
+	Board.input.prototype.Draw=function(lines,componentDom,drawNo){
+		if(this.lastDraw==drawNo)return;
+		this.lastDraw=drawNo;
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
+			//init draw of other component
+			this.pair.parent.Draw(lines,componentDom,drawNo);
+			
 			//draw line from this to other component
-			var fromX=this.pair.parent.x,
-				fromY=this.pair.parent.y,
-				toX=this.parent.x,
-				toY=this.parent.y;
-			var control1=fromX+minimum(40,Math.floor((toX-fromX)/3));
-			var control2=toX-minimum(40,Math.floor((toX-fromX)/3));
+			var fromX=this.pair.x(),
+				fromY=this.pair.y(),
+				toX=this.x(),
+				toY=this.y();
+			var control1=fromX+minimum(150,Math.floor((toX-fromX)/3));
+			var control2=toX-minimum(150,Math.floor((toX-fromX)/3));
 			var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
 				lineArg+=control2+","+toY+" "+toX+","+toY;
 			var line=lines.createPath();
