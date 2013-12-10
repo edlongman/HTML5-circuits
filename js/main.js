@@ -52,7 +52,8 @@
 		}
 	}
 	Board.component=function(){}
-	Board.component=function(properties){
+	Board.component=function(properties,parent){
+		this.parent=parent;
 		var propertyKeys=Object.keys(componentProperties);
 		for(var i=0;i<propertyKeys.length;i++){
 			this[propertyKeys[i]]=componentProperties[propertyKeys[i]];
