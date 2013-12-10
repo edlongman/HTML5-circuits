@@ -16,6 +16,7 @@
 	};
 	Board.circuit.prototype.addComponent=function(component){
 		this.parts.push(component);
+		component.parent=this;
 	};
 	Board.circuit.prototype.addConnector=function(from,to){
 		//check from and to
@@ -32,7 +33,9 @@
 	Board.circuit.prototype.Draw=function(domElement){
 		this.drawIteration++
 		var components=$(domElement).find("div");
+		this.componentsDom=components;
 		var lines=$(".linescontainer").svg("get");
+		this.lines=lines;
 		components.html("");
 		for(var i=0;i<this.parts.length;i++){
 			this.parts[i].Draw(components,lines,this.drawIteration);
@@ -52,8 +55,7 @@
 		}
 	}
 	Board.component=function(){}
-	Board.component=function(properties,parent){
-		this.parent=parent;
+	Board.component=function(properties){
 		var propertyKeys=Object.keys(componentProperties);
 		for(var i=0;i<propertyKeys.length;i++){
 			this[propertyKeys[i]]=componentProperties[propertyKeys[i]];
@@ -97,10 +99,35 @@
 			"top":this.y
 		});
 		boxes.append(this.dom);
+		this.dom.mousedown(this,function(e){
+			obj=e.data;
+			obj.clickOffsetX=e.offsetX;
+			obj.clickOffsetY=e.offsetY;
+			obj.parent.componentsDom.parent().mousemove(obj,function(e) {
+				obj=e.data;
+				obj.x=e.offsetX-obj.clickOffsetX;
+				obj.y=e.offsetY-obj.clickOffsetY;
+				obj.Update();
+			});
+		});
+		this.parent.componentsDom.parent().mouseup(this,function(e){
+			obj=e.data;
+			$(this).unbind("mousemove");
+			obj.clickOffsetX=undefined;
+			obj.clickOffsetY=undefined;
+		});
 		this.inputs.Draw(lines,this.dom,drawNo);
 		this.outputs.Draw(lines,this.dom,drawNo);
 	};
 	Board.component.prototype.lastDraw=0;
+	Board.component.prototype.Update=function(){
+		this.parent.drawIterator++;
+		this.lastDraw=this.parent.lastIterator;
+		this.dom.css({
+			"left":this.x,
+			"top":this.y
+		})
+	};
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
