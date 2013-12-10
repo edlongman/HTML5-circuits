@@ -30,13 +30,15 @@
 		return (min<arg)?arg:min;
 	}
 	Board.circuit.prototype.Draw=function(domElement){
+		this.drawIteration++
 		var components=$(domElement).find("div");
 		var lines=$(".linescontainer").svg("get");
 		components.html("");
 		for(var i=0;i<this.parts.length;i++){
-			this.parts[i].Draw(components,lines);
+			this.parts[i].Draw(components,lines,this.drawIteration);
 		}
 	};
+	Board.circuit.prototype.drawIteration=0;
 	componentProperties={
 		symbol:"path/to/img.png",
 		name:"name",
@@ -71,16 +73,18 @@
 		}
 		return this;
 	}
-	Board.component.prototype.Draw=function(boxes,lines){
+	Board.component.prototype.Draw=function(boxes,lines,drawNo){
+		if(this.lastDraw==drawNo)return;
+		this.lastDraw=drawNo;
 		this.dom=$("<div/>").addClass("component").css({
 			"left":this.x,
 			"top":this.y
 		});
 		boxes.append(this.dom);
 		for(var i=0;i<this.inputs.length;i++){
-			this.inputs[i].Draw(lines,this.dom);
+			this.inputs[i].Draw(lines,this.dom,drawNo);
 		}};
-	
+	Board.component.prototype.lastDraw=0;
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
@@ -140,6 +144,7 @@
 			lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 		}
 	}
+	Board.input.prototype.lastDraw=0;
 	
 	//define basic gates
 	//
