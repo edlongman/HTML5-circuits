@@ -3,7 +3,13 @@
 	$(".linescontainer").svg()
 	Board={};
 	Board.components=[];
-	
+	Board.components.get=function(name){
+		for(var i=0;i<Board.components.length;i++){
+			if(Board.components[i].name=name){
+				return Board.components[i];
+			}
+		}
+	}
 	//holds positions of components
 	Board.circuit=function(components){
 		this.parts=[];
@@ -283,11 +289,14 @@
 		test3=new Board.component({
 			name:"test3",
 			x:250,
-			y:400
-		});
+			y:400,
+			numberOfInputs:1
+		}),
+		test4=new Board.components.get("or");
 	testCircuit.addComponent(test1);
 	testCircuit.addComponent(test2);
 	testCircuit.addComponent(test3);
+	testCircuit.addComponent(test4);
 	test1.outputs[0].connect(test2.inputs[0]);
 	test2.outputs[0].connect(test3.inputs[0]);
 	testCircuit.Draw($(".board")[0]);
