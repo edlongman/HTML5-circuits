@@ -152,6 +152,72 @@
 		this.inputs.Update(this.lastDraw);
 		this.outputs.Update(this.lastDraw);
 	};
+	
+	Board.pointer={};
+	Board.pointer.connect=function(from){
+		this.pair=from;
+		if(this.pair.__proto__==Board.input.prototype){
+			from.connect(Board.pointer);
+		}
+	}
+	Board.pointer.x=function(e,componentsDom){
+		var boxesOffset=componentsDom.offset();
+		return e.clientX-boxesOffset.left;
+	}
+	Board.pointer.y=function(e,componentsDom){
+		var boxesOffset=componentsDom.offset();
+		return e.clientY-boxesOffset.top;
+	}
+	Board.pointer.Draw=function(e){
+		//draw connection
+		if(Board.pointer.pair.__proto__==Board.output.prototype){
+			var lines=Board.pointer.pair.parent.parent.lines,
+				componentsDom=Board.pointer.pair.parent.parent.componentsDom,
+				drawNo=(Board.pointer.pair.parent.parent.drawIteration++);
+			
+			
+			//draw line from this to other component
+			var fromX=Board.pointer.pair.x(),
+				fromY=Board.pointer.pair.y(),
+				toX=Board.pointer.x(e,componentsDom),
+				toY=Board.pointer.y(e,componentsDom);
+			var control1=fromX+minimum(150,Math.floor((toX-fromX)/3));
+			var control2=toX-minimum(150,Math.floor((toX-fromX)/3));
+			var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+				lineArg+=control2+","+toY+" "+toX+","+toY;
+			var line=lines.createPath();
+			line.move(fromX,fromY);
+			line.curveC(control1,fromY,control2,toY,toX,toY);
+			Board.pointer.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
+		}
+		else{
+			Board.pointer.pair.Draw();
+		}
+	}
+	Board.pointer.Update=function(e){
+		//draw connection
+		if(Board.pointer.pair.__proto__==Board.output.prototype){
+			var lines=Board.pointer.pair.parent.parent.lines,
+				componentsDom=Board.pointer.pair.parent.parent.componentsDom,
+				drawNo=Board.pointer.pair.parent.parent.drawIteration++;
+			
+			
+			//draw line from this to other component
+			var fromX=Board.pointer.pair.x(),
+				fromY=Board.pointer.pair.y(),
+				toX=Board.pointer.x(e,componentsDom),
+				toY=Board.pointer.y(e,componentsDom);
+			var control1=fromX+minimum(150,Math.floor((toX-fromX)/3));
+			var control2=toX-minimum(150,Math.floor((toX-fromX)/3));
+			var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+				lineArg+=control2+","+toY+" "+toX+","+toY;
+			var line=lines.createPath();
+			line.move(fromX,fromY);
+			line.curveC(control1,fromY,control2,toY,toX,toY);
+			Board.pointer.dom.setAttribute("d",line._path);
+		}
+	}
+	
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
