@@ -120,16 +120,14 @@
 		boxes.append(this.dom);
 		this.dom.mousedown(this,function(e){
 			var obj=e.data;
-			obj.clickOffsetX=e.offsetX;
-			obj.clickOffsetY=e.offsetY;
+			boxesOffset=obj.parent.componentsDom.offset();
+			obj.clickOffsetX=e.clientX-boxesOffset.left-obj.x;
+			obj.clickOffsetY=e.clientY-boxesOffset.top-obj.y;
 			obj.parent.componentsDom.parent().mousemove(obj,function(e) {
 				var obj=e.data;
-				if(e.target==obj.dom[0]){
-					e.offsetX=e.offsetX+obj.x;
-					e.offsetY=e.offsetY+obj.y;
-				}
-				obj.x=e.offsetX-obj.clickOffsetX;
-				obj.y=e.offsetY-obj.clickOffsetY;
+				boxesOffset=obj.parent.componentsDom.offset();
+				obj.x=e.clientX-obj.clickOffsetX-boxesOffset.left;
+				obj.y=e.clientY-obj.clickOffsetY-boxesOffset.top;
 				obj.Update();
 			});
 		});
