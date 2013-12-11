@@ -240,6 +240,20 @@
 		//draw node
 		var connectionNode=$("<div/>").addClass("outputNode");
 		outputsDom.append(connectionNode);
+		connectionNode.mousedown(this,function(e){
+			obj=e.data;
+			e.stopPropagation();
+			obj.connect(Board.pointer);
+			Board.pointer.Draw(e);
+			obj.parent.parent.componentsDom.parent().mousemove(this,function(e){
+				obj=e.data;
+				e.stopPropagation();
+				Board.pointer.Update(e);
+			});
+		});
+		componentDom.mouseup(function(){
+			$(this).unbind("mousemove");
+		})
 	}
 	Board.output.prototype.Update=function(lastDraw){
 		for(var i=0;i<this.length;i++){
