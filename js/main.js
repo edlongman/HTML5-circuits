@@ -155,8 +155,8 @@
 	
 	Board.pointer={};
 	Board.pointer.connect=function(from){
-		this.pair=from;
-		if(this.pair.__proto__==Board.input.prototype){
+		Board.pointer.pair=from;
+		if(Board.pointer.pair.__proto__==Board.input.prototype){
 			from.connect(Board.pointer);
 		}
 	}
@@ -238,6 +238,29 @@
 			line.move(fromX,fromY);
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			Board.pointer.pair.dom.setAttribute("d",line._path);
+		}
+	}
+	Board.pointer.Destroy=function(){
+		if(Board.pointer.pair.__proto__==Board.output.prototype){
+			Board.pointer.dom.remove();
+			for(var i=0;i<Board.pointer.pair.length;i++){
+				if(Board.pointer.pair[i]=Board.pointer){
+					Board.pointer.pair[i]=undefined;
+				}
+			}
+			for(var i=0;i<Board.pointer.pair.length;i++){
+				if(Board.pointer.pair[i]=undefined){
+					Board.pointer.pair[i]=Board.pointer.pair[i+1];
+					Board.pointer.pair[i+1]=undefined;
+				}
+			}
+			Board.pointer.pair.length--;
+			
+		}
+		else{
+			Board.pointer.pair.dom.remove();
+			Board.pointer.pair.pair=undefined;
+			Board.pointer.pair=undefined;
 		}
 	}
 	
