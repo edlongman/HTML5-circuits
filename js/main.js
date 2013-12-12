@@ -169,13 +169,11 @@
 		return e.clientY-boxesOffset.top;
 	}
 	Board.pointer.Draw=function(e){
+		var lines=Board.pointer.pair.parent.parent.lines,
+			componentsDom=Board.pointer.pair.parent.parent.componentsDom,
+			drawNo=(Board.pointer.pair.parent.parent.drawIteration++);
 		//draw connection
 		if(Board.pointer.pair.__proto__==Board.output.prototype){
-			var lines=Board.pointer.pair.parent.parent.lines,
-				componentsDom=Board.pointer.pair.parent.parent.componentsDom,
-				drawNo=(Board.pointer.pair.parent.parent.drawIteration++);
-			
-			
 			//draw line from this to other component
 			var fromX=Board.pointer.pair.x(),
 				fromY=Board.pointer.pair.y(),
@@ -191,17 +189,27 @@
 			Board.pointer.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 		}
 		else{
-			Board.pointer.pair.Draw();
+			//draw line from this to other component
+			var fromX=Board.pointer.x(e,componentsDom),
+				fromY=Board.pointer.y(e,componentsDom),
+				toX=Board.pointer.pair.x(),
+				toY=Board.pointer.pair.y();
+			var control1=fromX+minimum(150,Math.floor((toX-fromX)/3));
+			var control2=toX-minimum(150,Math.floor((toX-fromX)/3));
+			var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+				lineArg+=control2+","+toY+" "+toX+","+toY;
+			var line=lines.createPath();
+			line.move(fromX,fromY);
+			line.curveC(control1,fromY,control2,toY,toX,toY);
+			Board.pointer.pair.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 		}
 	}
 	Board.pointer.Update=function(e){
+		var lines=Board.pointer.pair.parent.parent.lines,
+			componentsDom=Board.pointer.pair.parent.parent.componentsDom,
+			drawNo=(Board.pointer.pair.parent.parent.drawIteration++);
 		//draw connection
 		if(Board.pointer.pair.__proto__==Board.output.prototype){
-			var lines=Board.pointer.pair.parent.parent.lines,
-				componentsDom=Board.pointer.pair.parent.parent.componentsDom,
-				drawNo=Board.pointer.pair.parent.parent.drawIteration++;
-			
-			
 			//draw line from this to other component
 			var fromX=Board.pointer.pair.x(),
 				fromY=Board.pointer.pair.y(),
@@ -215,6 +223,21 @@
 			line.move(fromX,fromY);
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			Board.pointer.dom.setAttribute("d",line._path);
+		}
+		else{
+			//draw line from this to other component
+			var fromX=Board.pointer.x(e,componentsDom),
+				fromY=Board.pointer.y(e,componentsDom),
+				toX=Board.pointer.pair.x(),
+				toY=Board.pointer.pair.y();
+			var control1=fromX+minimum(150,Math.floor((toX-fromX)/3));
+			var control2=toX-minimum(150,Math.floor((toX-fromX)/3));
+			var lineArg="M"+fromX+","+fromY+" C"+control1+","+fromY+" ";
+				lineArg+=control2+","+toY+" "+toX+","+toY;
+			var line=lines.createPath();
+			line.move(fromX,fromY);
+			line.curveC(control1,fromY,control2,toY,toX,toY);
+			Board.pointer.pair.dom.setAttribute("d",line._path);
 		}
 	}
 	
@@ -280,6 +303,21 @@
 		//draw node
 		var connectionNode=$("<div/>").addClass("inputNode");
 		inputsDom.append(connectionNode);
+		
+		connectionNode.mousedown(this,function(e){
+			var obj=e.data;
+			e.stopPropagation();
+			Board.pointer.connect(obj);
+			Board.pointer.Draw(e);
+			obj.parent.parent.componentsDom.parent().mousemove(this,function(e){
+				obj=e.data;
+				e.stopPropagation();
+				Board.pointer.Update(e);
+			});
+		})
+		componentDom.mouseup(function(){
+			$(this).unbind("mousemove");
+		})
 		
 		//draw connection
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
