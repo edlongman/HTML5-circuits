@@ -419,10 +419,23 @@
 				e.stopPropagation();
 				$(document.body).click();
 				this.setAttribute("stroke-width",7);
-				$(document.body).click(obj,function(e){
-					e.data.dom.setAttribute("stroke-width",5);
-				})
+				$(document.body).keydown(obj,Board.input.deleteKeyPress);
+				$(document.body).click(obj,Board.input.clickOffLine);
 			})
+	}
+	Board.input.clickOffLine=function(e){
+		e.data.dom.setAttribute("stroke-width",5);
+		$(document.body).unbind("click",Board.input.clickOffLine);
+		$(document.body).unbind("keydown",Board.input.deleteKeyPress);
+	}
+	Board.input.deleteKeyPress=function(e){
+		var obj=e.data;
+		//is it delete or backspace key
+		if(e.which==8||e.which==46){
+			Board.input.clickOffLine(e);
+			e.preventDefault();
+			obj.pair.Destroy(obj);
+		}
 	}
 	Board.input.prototype.Update=function(lastDraw){
 		//update connection
