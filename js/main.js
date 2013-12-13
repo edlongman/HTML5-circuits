@@ -293,7 +293,7 @@
 	}
 	Board.output.prototype.y=function(){
 		var outputNo=this.parent.outputs.indexOf(this);
-		return this.parent.y+20+outputNo*20;
+		return this.parent.y+20+outputNo*30;
 	}
 	Board.output.prototype.Draw=function(lines,componentDom,outputsDom,drawNo){
 		//draw node
@@ -360,7 +360,7 @@
 	}
 	Board.input.prototype.y=function(){
 		var inputNo=this.parent.inputs.indexOf(this);
-		return this.parent.y+20+inputNo*20;
+		return this.parent.y+20+inputNo*30;
 	}
 	Board.input.prototype.Draw=function(lines,componentDom,inputsDom,drawNo){
 		//draw node
