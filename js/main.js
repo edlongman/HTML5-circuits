@@ -211,10 +211,11 @@
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			Board.pointer.pair.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 		}
-		componentsDom.parent().mouseup(componentsDom,function(e) {
-			Board.pointer.Destroy();
-			$(this).unbind("mouseup",e.handleObj.handler)
-		});
+		componentsDom.parent().mouseup(componentsDom,Board.pointer.catchMouseUp);
+	}
+	Board.pointer.catchMouseUp=function(e) {
+		Board.pointer.Destroy();
+		$(this).unbind("mouseup",e.handleObj.handler);
 	}
 	Board.pointer.Update=function(e){
 		var lines=Board.pointer.pair.parent.parent.lines,
@@ -320,6 +321,7 @@
 				obj.connect(Board.pointer.pair);
 				obj[obj.length-1].DrawLine(obj.parent.parent.lines);
 				obj.parent.parent.componentsDom.parent().unbind("mousemove");
+				obj.parent.parent.componentsDom.parent().unbind("mouseup",Board.pointer.catchMouseUp);
 			}
 		})
 	}
