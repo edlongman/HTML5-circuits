@@ -381,6 +381,18 @@
 				$(this).unbind("mousemove");
 				$(this).unbind("mouseup",e.handleObj.handler);
 			})
+		});
+		connectionNode.mouseup(this,function(e){
+			var obj=e.data;
+			if(Board.pointer.pair.__proto__==Board.output.prototype){
+				e.stopPropagation();
+				var pair=Board.pointer.pair;
+				Board.pointer.Destroy();
+				pair.connect(obj);
+				obj.DrawLine(obj.parent.parent.lines);
+				obj.parent.parent.componentsDom.parent().unbind("mousemove");
+				obj.parent.parent.componentsDom.parent().unbind("mouseup",Board.pointer.catchMouseUp);
+			}
 		})
 		
 		//draw connection
