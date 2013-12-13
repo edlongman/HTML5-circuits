@@ -155,6 +155,14 @@
 	
 	Board.pointer={};
 	Board.pointer.connect=function(from){
+		if(from!=undefined){
+			if(from.__proto__==Board.input.prototype){
+				from.pair.Destroy(from);
+			}
+			else{
+				from.Destroy(from);
+			}
+		}
 		Board.pointer.pair=from;
 		if(Board.pointer.pair.__proto__==Board.input.prototype){
 			from.connect(Board.pointer);
@@ -311,6 +319,21 @@
 			this[i].Update(lastDraw);
 		}
 	}
+	Board.output.prototype.Destroy=function(pair){
+		for(var i=0;i<this.length;i++){
+			if(this[i]==pair){
+				this[i].Destroy();
+				this[i]=undefined;
+			}
+		}
+		for(var i=0;i<this.length;i++){
+			if(this[i]==undefined){
+				this[i]=this[i+1];
+				this[i+1]=undefined;
+			}
+		}
+		this.length--;
+	}
 	
 	//input port of component
 	Board.input=function(parent){
@@ -389,6 +412,11 @@
 			this.dom.setAttribute("d",line._path);
 		}
 	};
+	Board.input.prototype.Destroy=function(){
+		this.pair=undefined;
+		this.dom.remove();
+		this.dom=undefined;
+	}
 	Board.input.prototype.lastDraw=0;
 	
 	//define basic gates
