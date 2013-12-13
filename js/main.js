@@ -203,6 +203,10 @@
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			Board.pointer.pair.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 		}
+		componentsDom.parent().mouseup(componentsDom,function(e) {
+			Board.pointer.Destroy();
+			$(this).unbind("mouseup",e.handleObj.handler)
+		});
 	}
 	Board.pointer.Update=function(e){
 		var lines=Board.pointer.pair.parent.parent.lines,
@@ -296,10 +300,11 @@
 				e.stopPropagation();
 				Board.pointer.Update(e);
 			});
+			componentDom.mouseup(function(){
+				$(this).unbind("mousemove");
+				$(this).unbind("mouseup",e.handleObj.handler);
+			});
 		});
-		componentDom.mouseup(function(){
-			$(this).unbind("mousemove");
-		})
 	}
 	Board.output.prototype.Update=function(lastDraw){
 		for(var i=0;i<this.length;i++){
@@ -337,9 +342,10 @@
 				e.stopPropagation();
 				Board.pointer.Update(e);
 			});
-		})
-		componentDom.mouseup(function(){
-			$(this).unbind("mousemove");
+			componentDom.mouseup(function(){
+				$(this).unbind("mousemove");
+				$(this).unbind("mouseup",e.handleObj.handler);
+			})
 		})
 		
 		//draw connection
