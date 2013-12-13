@@ -414,6 +414,15 @@
 			line.move(fromX,fromY);
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			this.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
+			$(this.dom).click(this,function(e){
+				obj=e.data;
+				e.stopPropagation();
+				$(document.body).click();
+				this.setAttribute("stroke-width",7);
+				$(document.body).click(obj,function(e){
+					e.data.dom.setAttribute("stroke-width",5);
+				})
+			})
 	}
 	Board.input.prototype.Update=function(lastDraw){
 		//update connection
