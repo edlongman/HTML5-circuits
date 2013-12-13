@@ -62,6 +62,10 @@
 	}
 	Board.component=function(){}
 	Board.component=function(properties){
+		var propertyKeys=Object.keys(properties);
+		for(var i=0;i<propertyKeys.length;i++){
+			this[propertyKeys[i]]=properties[propertyKeys[i]];
+		}
 		var propertyKeys=Object.keys(componentProperties);
 		for(var i=0;i<propertyKeys.length;i++){
 			this[propertyKeys[i]]=componentProperties[propertyKeys[i]];
@@ -489,6 +493,25 @@
 		output:function(input,input2){
 			if(input|input2)return true;
 			return false;
+		}
+	}));
+	Board.components.push(new Board.component({
+		name:"switch",
+		numberOfInputs:0,
+		state:false,
+		output:function(input,input2){
+			return state;
+		},
+		postDraw:function(boxes,lines,drawNo){
+			this.dom.find(".inputNodes").remove();
+			this.dom.find(".componentName").remove();
+			this.dom.append($("<div/>").addClass("switch")
+										.click(this,function(e){
+											var obj=e.data;
+											obj.state=!obj.state;
+											if(obj.state)$(this).addClass("on");
+											if(!obj.state)$(this).removeClass("on");
+										}));
 		}
 	}));
 	
