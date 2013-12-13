@@ -121,13 +121,13 @@
 		this.dom.mousedown(this,function(e){
 			var obj=e.data;
 			boxesOffset=obj.parent.componentsDom.offset();
-			obj.clickOffsetX=e.clientX-boxesOffset.left-obj.x;
-			obj.clickOffsetY=e.clientY-boxesOffset.top-obj.y;
+			obj.clickOffsetX=e.pageX-boxesOffset.left-obj.x;
+			obj.clickOffsetY=e.pageY-boxesOffset.top-obj.y;
 			obj.parent.componentsDom.parent().mousemove(obj,function(e) {
 				var obj=e.data;
 				boxesOffset=obj.parent.componentsDom.offset();
-				obj.x=e.clientX-obj.clickOffsetX-boxesOffset.left;
-				obj.y=e.clientY-obj.clickOffsetY-boxesOffset.top;
+				obj.x=e.pageX-obj.clickOffsetX-boxesOffset.left;
+				obj.y=e.pageY-obj.clickOffsetY-boxesOffset.top;
 				obj.Update();
 			});
 		});
@@ -170,11 +170,11 @@
 	}
 	Board.pointer.x=function(e,componentsDom){
 		var boxesOffset=componentsDom.offset();
-		return e.clientX-boxesOffset.left;
+		return e.pageX-boxesOffset.left;
 	}
 	Board.pointer.y=function(e,componentsDom){
 		var boxesOffset=componentsDom.offset();
-		return e.clientY-boxesOffset.top;
+		return e.pageY-boxesOffset.top;
 	}
 	Board.pointer.Draw=function(e){
 		var lines=Board.pointer.pair.parent.parent.lines,
