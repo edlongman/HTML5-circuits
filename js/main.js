@@ -536,11 +536,13 @@
 			y:400,
 			numberOfInputs:1
 		}),
-		test4=new Board.components.get("or");
+		test4=new Board.components.get("or"),
+		test5=new Board.components.get("switch");
 	testCircuit.addComponent(test1);
 	testCircuit.addComponent(test2);
 	testCircuit.addComponent(test3);
 	testCircuit.addComponent(test4);
+	testCircuit.addComponent(test5);
 	test1.outputs[0].connect(test2.inputs[0]);
 	test2.outputs[0].connect(test3.inputs[0]);
 	testCircuit.Draw($(".board")[0]);
