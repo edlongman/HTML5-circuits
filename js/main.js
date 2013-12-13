@@ -155,7 +155,7 @@
 	
 	Board.pointer={};
 	Board.pointer.connect=function(from){
-		if(from!=undefined){
+		if(from.pair!=undefined){
 			if(from.__proto__==Board.input.prototype){
 				from.pair.Destroy(from);
 			}
