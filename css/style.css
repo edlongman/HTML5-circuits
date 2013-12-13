@@ -27,16 +27,21 @@ body:before {
 	width:100%;
 	height:90%;
 	background:#FFF;
+	float:right;
 }
 .boxes{
 	height:0px;
 	position:relative;
 }
 .components{
-	width: 19%;
+	width: 20%;
 	height:100%;
-	background:#BBB;
-	display:inline-block;
+	background:#FFF;
+	float:left;
+}
+.linescontainer{
+	width:100%;
+	height:100%;
 }
 .component{
 	position:absolute;
