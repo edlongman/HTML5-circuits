@@ -313,6 +313,15 @@
 				$(this).unbind("mouseup",e.handleObj.handler);
 			});
 		});
+		connectionNode.mouseup(this,function(e){
+			var obj=e.data;
+			if(Board.pointer.pair.__proto__==Board.input.prototype){
+				e.stopPropagation();
+				obj.connect(Board.pointer.pair);
+				obj[obj.length-1].DrawLine(obj.parent.parent.lines);
+				obj.parent.parent.componentsDom.parent().unbind("mousemove");
+			}
+		})
 	}
 	Board.output.prototype.Update=function(lastDraw){
 		for(var i=0;i<this.length;i++){
@@ -341,6 +350,7 @@
 		return this;
 	}
 	Board.input.prototype.connect=function(from){
+		if(this.pair!=undefined)this.pair.Destroy(this);
 		this.pair=from;
 	}
 	Board.input.prototype.x=function(){
@@ -373,9 +383,10 @@
 		
 		//draw connection
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
-			//init draw of other component
-			this.pair.parent.Draw(lines,componentDom,drawNo);
-			
+			this.DrawLine(lines)
+		}
+	}
+	Board.input.prototype.DrawLine=function(lines){
 			//draw line from this to other component
 			var fromX=this.pair.x(),
 				fromY=this.pair.y(),
@@ -389,7 +400,6 @@
 			line.move(fromX,fromY);
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			this.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
-		}
 	}
 	Board.input.prototype.Update=function(lastDraw){
 		//update connection
