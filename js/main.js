@@ -142,8 +142,8 @@
 	};
 	Board.component.prototype.lastDraw=0;
 	Board.component.prototype.Update=function(lastDraw){
-		if(lastDraw!=undefined&&this.lastDraw==lastDraw)return;
-		if(lastDraw!=undefined)this.parent.drawIteration++;
+		if(lastDraw!=undefined||this.lastDraw==lastDraw)return;
+		if(lastDraw!=undefined&&this.parent.drawIteration!=lastDraw)this.parent.drawIteration++;
 		this.lastDraw=this.parent.drawIteration;
 		this.dom.css({
 			"left":this.x,
