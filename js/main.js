@@ -5,7 +5,7 @@
 	Board.components=[];
 	Board.components.get=function(name){
 		for(var i=0;i<Board.components.length;i++){
-			if(Board.components[i].name=name){
+			if(Board.components[i].name==name){
 				return Board.components[i];
 			}
 		}
