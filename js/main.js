@@ -244,12 +244,12 @@
 		if(Board.pointer.pair.__proto__==Board.output.prototype){
 			Board.pointer.dom.remove();
 			for(var i=0;i<Board.pointer.pair.length;i++){
-				if(Board.pointer.pair[i]=Board.pointer){
+				if(Board.pointer.pair[i]==Board.pointer){
 					Board.pointer.pair[i]=undefined;
 				}
 			}
 			for(var i=0;i<Board.pointer.pair.length;i++){
-				if(Board.pointer.pair[i]=undefined){
+				if(Board.pointer.pair[i]==undefined){
 					Board.pointer.pair[i]=Board.pointer.pair[i+1];
 					Board.pointer.pair[i+1]=undefined;
 				}
