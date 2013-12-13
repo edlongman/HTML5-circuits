@@ -51,6 +51,7 @@ body:before {
 }
 .inputNodes,.outputNodes{
 	display: inline-block;
+	float:left;
 }
 .outputNodes{
 	float:right;
@@ -66,6 +67,11 @@ body:before {
 }
 .outputNode{
 	float: right;
+}
+.componentName{
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 10px;
 }
 
 .board{

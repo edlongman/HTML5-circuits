@@ -139,6 +139,7 @@
 		});
 		this.inputs.Draw(lines,this.dom,drawNo);
 		this.outputs.Draw(lines,this.dom,drawNo);
+		this.dom.append($("<div/>").addClass("componentName").text(this.name))
 	};
 	Board.component.prototype.lastDraw=0;
 	Board.component.prototype.Update=function(lastDraw){
