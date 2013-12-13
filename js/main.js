@@ -426,7 +426,7 @@
 	};
 	Board.input.prototype.Destroy=function(){
 		this.pair=undefined;
-		this.dom.remove();
+		if(this.dom!=undefined)this.dom.remove();
 		this.dom=undefined;
 	}
 	Board.input.prototype.lastDraw=0;
