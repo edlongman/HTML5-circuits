@@ -20,7 +20,7 @@
 				componentName=$("<div/>").addClass("componentName").text(Board.components[i].name),
 				componentDragPoint=$("<div/>").addClass("componentDragPoint").mousedown(circuit,function(e){
 						var obj=e.data;
-						var componentToAdd=Board.components.get($(this).data("componentName"));
+						var componentToAdd=Board.components.get($(this).parent().data("componentName"));
 						obj.addComponent(componentToAdd);
 						componentToAdd.Draw();
 						componentToAdd.trigger("mousemove",e);
