@@ -515,6 +515,20 @@
 										}));
 		}
 	}));
+	Board.components.push(new Board.component({
+		name:"output",
+		numberOfInputs:1,
+		numberOfOutputs:0,
+		state:false,
+		output:function(input,input2){
+			return false;
+		},
+		postDraw:function(boxes,lines,drawNo){
+			this.dom.find(".outputNodes").remove();
+			this.dom.find(".componentName").remove();
+			this.dom.append($("<div/>").addClass("bulb"));
+		}
+	}));
 	
 	
 	
@@ -538,11 +552,13 @@
 		}),
 		test4=new Board.components.get("or"),
 		test5=new Board.components.get("switch");
+		test6=new Board.components.get("output");
 	testCircuit.addComponent(test1);
 	testCircuit.addComponent(test2);
 	testCircuit.addComponent(test3);
 	testCircuit.addComponent(test4);
 	testCircuit.addComponent(test5);
+	testCircuit.addComponent(test6);
 	test1.outputs[0].connect(test2.inputs[0]);
 	test2.outputs[0].connect(test3.inputs[0]);
 	testCircuit.Draw($(".board")[0]);
