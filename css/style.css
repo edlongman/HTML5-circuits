@@ -97,6 +97,32 @@ body:before {
 .switch.on:before{
 	left: 20px;
 }
+.bulb{
+	width: 34px;
+	height: 18px;
+	border: 1px solid black;
+	display: inline-block;
+	float: right;
+	margin-top: 11px;
+	margin-right: 34px;
+	background: #555;
+}
+.bulb:before{
+	content:'OFF';
+	position: relative;
+	color: white;
+	top: -2px;
+	left: 1px;
+}
+.bulb.on{
+	background: #8C8;
+}
+.bulb.on:before{
+	content:'ON';
+	color:4px;
+	left:4px;
+}
+
 .board{
 	width: 80%;
 	height:100%;
