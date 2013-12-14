@@ -26,6 +26,7 @@
 						var boxesOffset=obj.componentsDom.offset();
 						componentToAdd.x=e.pageX-boxesOffset.left-0.5*componentToAdd.dom.width();
 						componentToAdd.y=e.pageY-boxesOffset.top-0.5*componentToAdd.dom.height();
+						componentToAdd.Update();
 						componentToAdd.dom.trigger(e);
 					});
 			basicItem.append(componentIcon,componentName,componentDragPoint);
