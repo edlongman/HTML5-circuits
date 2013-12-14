@@ -22,8 +22,8 @@
 						var obj=e.data;
 						var componentToAdd=Board.components.get($(this).parent().data("componentName"));
 						obj.addComponent(componentToAdd);
-						componentToAdd.Draw();
-						componentToAdd.trigger("mousemove",e);
+						obj.Update();
+						componentToAdd.dom.trigger(e);
 					});
 			basicItem.append(componentIcon,componentName,componentDragPoint);
 			componentsBox.append(basicItem);
@@ -68,6 +68,18 @@
 		Board.components.Draw(this);
 	};
 	Board.circuit.prototype.drawIteration=0;
+	Board.circuit.prototype.Update=function(){
+		this.drawIteration++
+		for(var i=0;i<this.parts.length;i++){
+			if(this.parts[i].dom==undefined){
+				this.parts[i].Draw(this.componentsDom,this.lines,this.drawIteration)
+			}
+			else{
+				this.parts[i].Update(this.drawIteration);
+			}
+		}
+		Board.components.Draw(this);
+	};
 	componentProperties={
 		symbol:"path/to/img.png",
 		name:"name",
