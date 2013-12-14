@@ -10,6 +10,25 @@
 			}
 		}
 	}
+	Board.components.Draw=function(circuit){
+		var componentsBox=$(document.body).find(".components");
+		componentsBox.html("");
+		for(var i=0;i<Board.components.length;i++){
+			var basicItem=$("<div/>").addClass("componentItem").data("componentName",Board.components[i].name),
+				componentIcon=$("<div/>")
+					.addClass("componentIcon").css("backgroundImage","url("+Board.components[i].symbol+")"),
+				componentName=$("<div/>").addClass("componentName").text(Board.components[i].name),
+				componentDragPoint=$("<div/>").addClass("componentDragPoint").mousedown(circuit,function(e){
+						var obj=e.data;
+						var componentToAdd=Board.components.get($(this).data("componentName"));
+						obj.addComponent(componentToAdd);
+						componentToAdd.Draw();
+						componentToAdd.trigger("mousemove",e);
+					});
+			basicItem.append(componentIcon,componentName,componentDragPoint);
+			componentsBox.append(basicItem);
+		}
+	}
 	//holds positions of components
 	Board.circuit=function(components){
 		this.parts=[];
@@ -46,6 +65,7 @@
 		for(var i=0;i<this.parts.length;i++){
 			this.parts[i].Draw(components,lines,this.drawIteration);
 		}
+		Board.components.Draw(this);
 	};
 	Board.circuit.prototype.drawIteration=0;
 	componentProperties={
