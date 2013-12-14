@@ -72,6 +72,7 @@ body:before {
 	margin-left: auto;
 	margin-right: auto;
 	padding-top: 10px;
+	display: inline-block;
 }
 .switch{
 	margin: 10px;
@@ -133,4 +134,45 @@ body:before {
 	stroke:black;
 	stroke-width:4;
 	fill:none;
+}
+
+.componentDragPoint{
+	display: inline-block;
+	width: 25px;
+	height: 24px;
+	background: #AAA;
+	float: right;
+	margin: 5px;
+	border-top: #DDD 19.33px solid;
+	box-sizing: border-box;
+	border-left: #DDD 2px solid;
+	border-right: #DDD 2px solid;
+	border-bottom: #DDD 2px solid;
+	position: relative;
+}
+.componentDragPoint:before{
+	content: '';
+	width: 21px;
+	height: 8.66666px;
+	background-color: #DDD;
+	display: block;
+	position: absolute;
+	top: -17px;
+	border-top: #AAA 3px solid;
+	box-sizing: border-box;
+	border-bottom: #AAA 3px solid;
+}
+.componentDragPoint:after{
+	content: '';
+	width: 21px;
+	height: 3px;
+	background-color: #AAA;
+	display: block;
+	position: relative;
+	top: -5.666px;
+}
+.componentIcon{
+	width: 30px;
+	height: 30px;
+	display: inline-block;
 }
