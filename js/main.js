@@ -177,6 +177,12 @@
 			obj.clickOffsetX=undefined;
 			obj.clickOffsetY=undefined;
 		});
+		this.dom.dblclick(this,function(e){
+			var obj=e.data;
+			obj.dom.append($("<div/>").addClass("deleteComponent").click(obj,function(){
+				obj.Destroy();
+			}))
+		});
 		this.inputs.Draw(lines,this.dom,drawNo);
 		this.outputs.Draw(lines,this.dom,drawNo);
 		this.dom.append($("<div/>").addClass("componentName").text(this.name));
