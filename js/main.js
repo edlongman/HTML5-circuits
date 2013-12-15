@@ -200,6 +200,20 @@
 		this.inputs.Update(this.lastDraw);
 		this.outputs.Update(this.lastDraw);
 	};
+	Board.component.prototype.Destroy=function(){
+		for(var i=0;i<this.inputs.length;i++){
+			if(this.inputs[i].pair!=undefined){
+				this.inputs[i].pair.Destroy(this.inputs[i]);
+			}
+		}
+		for(var i=0;i<this.outputs.length;i++){
+			if(this.outputs[i].length>0){
+				for(var ii=0;ii<this.outputs[i].length;ii++){
+					this.outputs[i].Destroy(this.outputs[i][ii]);
+				}
+			}
+		}
+	}
 	
 	Board.pointer={};
 	Board.pointer.connect=function(from){
