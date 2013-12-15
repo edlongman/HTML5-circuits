@@ -136,14 +136,19 @@ body:before {
 	stroke-width:4;
 	fill:none;
 }
-
+.components .componentItem:nth-child(2n-1){
+	background: #EEE;
+}
+.componentItem{
+	padding-bottom:8px;
+}
 .componentDragPoint{
 	display: inline-block;
 	width: 25px;
 	height: 24px;
 	background: #AAA;
 	float: right;
-	margin: 5px;
+	margin: 10px;
 	border-top: #DDD 19.33px solid;
 	box-sizing: border-box;
 	border-left: #DDD 2px solid;
