@@ -205,6 +205,7 @@
 		})
 		this.inputs.Update(this.lastDraw);
 		this.outputs.Update(this.lastDraw);
+		if(this.postUpdate!=undefined)this.postUpdate();
 	};
 	Board.component.prototype.Destroy=function(){
 		for(var i=0;i<this.inputs.length;i++){
@@ -541,32 +542,30 @@
 	Board.components.push(new Board.component({
 		name:"not",
 		numberOfInputs:1,
-		output:function(input){
-			return !input;
+		output:function(){
+			return [!this.inputs[0].output()];
 		}
 	}));
 	Board.components.push(new Board.component({
 		name:"and",
 		numberOfInputs:2,
 		output:function(input,input2){
-			if(input&&input2)return true;
-			return false;
+			return [this.inputs[0].output()&&this.inputs[0].output()]
 		}
 	}));
 	Board.components.push(new Board.component({
 		name:"or",
 		numberOfInputs:2,
-		output:function(input,input2){
-			if(input|input2)return true;
-			return false;
+		output:function(){
+			return [input||input2];
 		}
 	}));
 	Board.components.push(new Board.component({
 		name:"switch",
 		numberOfInputs:0,
 		state:false,
-		output:function(input,input2){
-			return state;
+		output:function(){
+			return this.state;
 		},
 		postDraw:function(boxes,lines,drawNo){
 			this.dom.find(".inputNodes").remove();
@@ -585,15 +584,22 @@
 		numberOfInputs:1,
 		numberOfOutputs:0,
 		output:function(){
-			return this.inputs[0].output();
+			var indicator=this.dom.find(".bulb");
+			if(this.inputs[0].output()){
+				indicator.addClass("on");
+			}
+			else{
+				indicator.removeClass("off");
+			}
 		},
 		postDraw:function(boxes,lines,drawNo){
 			this.dom.find(".outputNodes").remove();
 			this.dom.find(".componentName").remove();
 			this.dom.append($("<div/>").addClass("bulb"));
-			if(this.output()){
-				this.dom.find(".bulb").addClass("on");
-			}
+			this.output();
+		},
+		postUpdate:function(){
+			this.output();
 		}
 	}));
 	
