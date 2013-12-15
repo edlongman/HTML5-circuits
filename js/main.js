@@ -536,6 +536,10 @@
 		this.dom=undefined;
 	}
 	Board.input.prototype.lastDraw=0;
+	Board.input.prototype.output=function(){
+		if(this.pair==undefined)return false;
+		return this.pair.parent.output();
+	}
 	
 	//define basic gates
 	//
