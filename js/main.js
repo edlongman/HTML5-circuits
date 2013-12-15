@@ -185,6 +185,12 @@
 		});
 		this.dom.dblclick(this,function(e){
 			var obj=e.data;
+			$(document.body).click(obj,function(e){
+				if (e.data.dom!=undefined) {
+					e.data.dom.find(".deleteComponent").remove();
+				}
+				$(this).unbind("click",e.handleObj.handler);
+			})
 			obj.dom.append($("<div/>").addClass("deleteComponent").click(obj,function(){
 				obj.Destroy();
 			}))
