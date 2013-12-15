@@ -177,3 +177,31 @@ body:before {
 	height: 30px;
 	display: inline-block;
 }
+@-webkit-keyframes wiggle{
+	0% {-webkit-transform:rotate(-7deg)}
+	50% {-webkit-transform:rotate(7deg)}
+	100% {-webkit-transform:rotate(-7deg)}
+}
+.deleteComponent{
+	width: 15px;
+	height: 15px;
+	background: red;
+	position: absolute;
+	top: -7px;
+	right: -7px;
+	-webkit-border-radius: 3px;
+	-webkit-transform: rotate(7deg);
+	-webkit-animation-name: wiggle;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+}
+.deleteComponent:before{
+	content: 'x';
+	font-size: 22px;
+	color: white;
+	width: 12px;
+	height: 15px;
+	position: relative;
+	top: -9.5px;
+	left: 2px;
+}
