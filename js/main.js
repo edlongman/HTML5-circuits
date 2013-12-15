@@ -196,8 +196,8 @@
 	};
 	Board.component.prototype.lastDraw=0;
 	Board.component.prototype.Update=function(lastDraw){
-		if(lastDraw!=undefined||this.lastDraw==lastDraw)return;
-		if(lastDraw!=undefined&&this.parent.drawIteration!=lastDraw)this.parent.drawIteration++;
+		if(lastDraw!=undefined&&this.lastDraw==lastDraw)return;
+		if(lastDraw==undefined||this.parent.drawIteration!=lastDraw)this.parent.drawIteration++;
 		this.lastDraw=this.parent.drawIteration;
 		this.dom.css({
 			"left":this.x,
@@ -510,6 +510,7 @@
 		}
 	}
 	Board.input.prototype.Update=function(lastDraw){
+		this.parent.Update(lastDraw);
 		//update connection
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
 			//init draw of other component
@@ -580,6 +581,7 @@
 											obj.state=!obj.state;
 											if(obj.state)$(this).addClass("on");
 											if(!obj.state)$(this).removeClass("on");
+											obj.Update();
 										}));
 		}
 	}));
@@ -593,7 +595,7 @@
 				indicator.addClass("on");
 			}
 			else{
-				indicator.removeClass("off");
+				indicator.removeClass("on");
 			}
 		},
 		postDraw:function(boxes,lines,drawNo){
