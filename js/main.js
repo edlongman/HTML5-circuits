@@ -539,7 +539,10 @@
 	Board.input.prototype.lastDraw=0;
 	Board.input.prototype.output=function(){
 		if(this.pair==undefined)return false;
-		return this.pair.parent.output();
+		for(var i=0;i<this.pair.parent.outputs.length;i++){
+			if(this.pair.parent.outputs[i]==this.pair)break;
+		}
+		return this.pair.parent.output()[i];
 	}
 	
 	//define basic gates
@@ -555,14 +558,14 @@
 		name:"and",
 		numberOfInputs:2,
 		output:function(input,input2){
-			return [this.inputs[0].output()&&this.inputs[0].output()]
+			return [this.inputs[0].output()&&this.inputs[1].output()]
 		}
 	}));
 	Board.components.push(new Board.component({
 		name:"or",
 		numberOfInputs:2,
 		output:function(){
-			return [input||input2];
+			return [this.inputs[0].output()||this.inputs[1].output()];
 		}
 	}));
 	Board.components.push(new Board.component({
@@ -570,7 +573,7 @@
 		numberOfInputs:0,
 		state:false,
 		output:function(){
-			return this.state;
+			return [this.state];
 		},
 		postDraw:function(boxes,lines,drawNo){
 			this.dom.find(".inputNodes").remove();
