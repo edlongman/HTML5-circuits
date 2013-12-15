@@ -47,6 +47,12 @@
 		this.parts.push(component);
 		component.parent=this;
 	};
+	Board.circuit.prototype.removeComponent=function(component){
+		if(this.parts.indexOf(component)!==-1){
+			this.parts.parent=undefined;
+			this.parts.remove(this.parts.indexOf(component));
+		}
+	};
 	Board.circuit.prototype.addConnector=function(from,to){
 		//check from and to
 		if(from.type==to.type){
@@ -213,6 +219,9 @@
 				}
 			}
 		}
+		this.parent.removeComponent(this);
+		this.dom.remove();
+		this.dom=undefined;
 	}
 	
 	Board.pointer={};
