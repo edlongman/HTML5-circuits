@@ -584,14 +584,16 @@
 		name:"output",
 		numberOfInputs:1,
 		numberOfOutputs:0,
-		state:false,
-		output:function(input,input2){
-			return false;
+		output:function(){
+			return this.inputs[0].output();
 		},
 		postDraw:function(boxes,lines,drawNo){
 			this.dom.find(".outputNodes").remove();
 			this.dom.find(".componentName").remove();
 			this.dom.append($("<div/>").addClass("bulb"));
+			if(this.output()){
+				this.dom.find(".bulb").addClass("on");
+			}
 		}
 	}));
 	
