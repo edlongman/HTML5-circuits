@@ -55,11 +55,12 @@
 	};
 	Board.circuit.prototype.addConnector=function(from,to){
 		//check from and to
-		if(from.type==to.type){
+		if(from.__proto__==to.__proto__||to.parent==from.parent){
 			//can't draw that line
 			return false;
 		}
 		from.connect(to);
+		return true;
 	};
 	//doesn't let the value go below minimum
 	function minimum(min,arg){
@@ -394,12 +395,12 @@
 		});
 		connectionNode.mouseup(this,function(e){
 			var obj=e.data;
-			if(Board.pointer.pair.__proto__==Board.input.prototype){
+			if(obj.parent.parent.addConnector(obj,Board.pointer.pair)){
 				e.stopPropagation();
-				obj.connect(Board.pointer.pair);
 				obj[obj.length-1].DrawLine(obj.parent.parent.lines);
 				obj.parent.parent.componentsDom.parent().unbind("mousemove");
 				obj.parent.parent.componentsDom.parent().unbind("mouseup",Board.pointer.catchMouseUp);
+				obj.parent.Update();
 			}
 		})
 	}
@@ -462,14 +463,14 @@
 		});
 		connectionNode.mouseup(this,function(e){
 			var obj=e.data;
-			if(Board.pointer.pair.__proto__==Board.output.prototype){
+			if(obj.parent.parent.addConnector(Board.pointer.pair,obj)){
 				e.stopPropagation();
 				var pair=Board.pointer.pair;
 				Board.pointer.Destroy();
-				pair.connect(obj);
 				obj.DrawLine(obj.parent.parent.lines);
 				obj.parent.parent.componentsDom.parent().unbind("mousemove");
 				obj.parent.parent.componentsDom.parent().unbind("mouseup",Board.pointer.catchMouseUp);
+				obj.parent.Update();
 			}
 		})
 		
