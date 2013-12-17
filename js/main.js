@@ -41,8 +41,20 @@
 				this.parts[i]=components[i];
 			}
 		}
+		this.inputs=[];
+		this.outputs=[];
 		return this;
 	};
+	Board.circuit.prototype.addIOProperty=function(noOfInputs,noOfOutputs){
+		this.inputs=[];
+		for(var i=0;i<this.noOfInputs;i++){
+			this.inputs.push(new Board.components.get("switch"));
+		}
+		this.outputs=[];
+		for(var i=0;i<this.noOfOutputs;i++){
+			this.outputs.push(new Board.components.get("output"));
+		}
+	}
 	Board.circuit.prototype.addComponent=function(component){
 		this.parts.push(component);
 		component.parent=this;
