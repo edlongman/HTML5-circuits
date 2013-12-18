@@ -49,6 +49,7 @@
 		this.inputs=[];
 		for(var i=0;i<this.noOfInputs;i++){
 			this.inputs.push(new Board.components.get("switch"));
+			this.inputs[i].parent=this;
 		}
 		this.outputs=[];
 		for(var i=0;i<this.noOfOutputs;i++){
