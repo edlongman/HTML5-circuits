@@ -47,12 +47,12 @@
 	};
 	Board.circuit.prototype.addIOProperty=function(noOfInputs,noOfOutputs){
 		this.inputs=[];
-		for(var i=0;i<this.noOfInputs;i++){
+		for(var i=0;i<noOfInputs;i++){
 			this.inputs.push(new Board.components.get("switch"));
 			this.inputs[i].parent=this;
 		}
 		this.outputs=[];
-		for(var i=0;i<this.noOfOutputs;i++){
+		for(var i=0;i<noOfOutputs;i++){
 			this.outputs.push(new Board.components.get("output"));
 		}
 	}
@@ -67,13 +67,15 @@
 		}
 	};
 	Board.circuit.prototype.addConnector=function(from,to){
+		if(from instanceof(Board.component))from=from.getFirstOutput();
+		if(to instanceof(Board.component))to=to.getFirstInput();
 		//check from and to
 		if(from.__proto__==to.__proto__||to.parent==from.parent){
 			//can't draw that line
 			return false;
 		}
 		from.connect(to);
-		return true;
+		return this;
 	};
 	//doesn't let the value go below minimum
 	function minimum(min,arg){
