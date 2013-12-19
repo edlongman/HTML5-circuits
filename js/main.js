@@ -172,6 +172,24 @@
 		}
 		return this;
 	}
+	//get first un-taken output and if there is none then take the first
+	Board.component.prototype.getFirstOutput=function(){
+		for(var i=0;i<this.outputs.length;i++){
+			if(this.outputs[i].length==0){
+				return this.outputs[i];
+			}
+		}
+		return this.outputs[0];
+	}
+	//get first un-taken input and if there is none then take the first
+	Board.component.prototype.getFirstInput=function(){
+		for(var i=0;i<this.inputs.length;i++){
+			if(this.inputs[i].pair==undefined){
+				return this.inputs[i];
+			}
+		}
+		return this.inputs[0];
+	}
 	Board.component.prototype.Draw=function(boxes,lines,drawNo){
 		if(this.lastDraw==drawNo)return;
 		this.lastDraw=drawNo;
@@ -648,11 +666,31 @@
 			x:300,
 			y:250
 		}),
-		test3=new Board.component({
+		t3_and1=new Board.components.get("and"),
+		t3_and2=new Board.components.get("and"),
+		t3_not=new Board.components.get("not"),
+		t3_or=new Board.components.get("or");
+	var t3_components=new Board.circuit([
+				t3_and1,
+				t3_not,
+				t3_or,
+				t3_and2,
+			]);
+	t3_components.addIOProperty(2,1);
+	t3_components.addConnector(t3_components.inputs[0],t3_and1)
+				 .addConnector(t3_components.inputs[1],t3_and1)
+				 .addConnector(t3_components.inputs[0],t3_or)
+				 .addConnector(t3_components.inputs[1],t3_or)
+				 .addConnector(t3_and1,t3_not)
+				 .addConnector(t3_not,t3_and2)
+				 .addConnector(t3_or,t3_and2)
+				 .addConnector(t3_and2,t3_components.outputs[0]);
+	var test3=new Board.component({
 			name:"test3",
 			x:250,
 			y:400,
-			numberOfInputs:1
+			numberOfInputs:2,
+			components:t3_components
 		}),
 		test4=new Board.components.get("or"),
 		test5=new Board.components.get("switch");
