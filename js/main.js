@@ -115,7 +115,18 @@
 		x:0,
 		y:0,
 		output:function(){
-			
+			for(var i=0;i<this.inputs.length;i++){
+				if(this.components.inputs[i]!=undefined){
+					this.components.inputs[i].state=this.inputs[i].output();
+				}
+			}
+			var result=[];
+			for(var i=0;i<this.components.outputs.length;i++){
+				if(this.components.outputs[i]!=undefined){
+					result.push(this.components.outputs[i].output());
+				}
+			}
+			return result;
 		}
 	}
 	Board.component=function(){}
@@ -633,6 +644,9 @@
 		numberOfInputs:1,
 		numberOfOutputs:0,
 		output:function(){
+			if(this.dom==undefined){
+				return this.inputs[0].output();
+			}
 			var indicator=this.dom.find(".bulb");
 			if(this.inputs[0].output()){
 				indicator.addClass("on");
