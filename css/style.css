@@ -210,3 +210,11 @@ body:before {
 	top: -9.5px;
 	left: 2px;
 }
+.selectionBox{
+	width:0px;
+	height: 0px;
+	border: 1px dashed red;
+	position:absolute;
+	left:-2;
+	top:-2;
+}
