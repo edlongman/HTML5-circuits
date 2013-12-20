@@ -341,11 +341,11 @@
 	Board.component.prototype.checkSelectStatus=function(fromX,fromY,toX,toY){
 		var aPos=this.dom.position();
 		var bPos={
-			"x":aPos.x+this.dom.width(),
-			"y":aPos.y+this.dom.height()
+			"left":aPos.left+this.dom.width(),
+			"top":aPos.top+this.dom.height()
 		}
-		if((fromX<aPos.x&&toX>aPos)||(fromX<bPos.x&&toX>bPos)){
-			if((fromX<aPos.x&&toX>aPos)||(fromX<bPos.x&&toX>bPos)){
+		if((fromX<aPos.left&&toX>aPos.left)||(fromX<bPos.left&&toX>bPos.left)){
+			if((fromX<aPos.top&&toX>aPos.top)||(fromX<bPos.top&&toX>bPos.top)){
 				//selection box and component intersect
 				this.Select();
 			}
