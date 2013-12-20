@@ -680,24 +680,29 @@
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			this.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 			$(this.dom).click(this,function(e){
-				obj=e.data;
 				e.stopPropagation();
-				$(document.body).click();
-				this.setAttribute("stroke-width",7);
-				$(document.body).keydown(obj,Board.input.deleteKeyPress);
-				$(document.body).click(obj,Board.input.clickOffLine);
+				e.data.Select();
 			})
 	}
-	Board.input.clickOffLine=function(e){
-		e.data.dom.setAttribute("stroke-width",5);
-		$(document.body).unbind("click",Board.input.clickOffLine);
+	Board.input.prototype.Select=function(){
+		$(document.body).click();
+		this.dom.setAttribute("stroke-width",7);
+		$(document.body).keydown(this,Board.input.deleteKeyPress);
+		$(document.body).click(this,function(e){
+				e.stopPropagation();
+				e.data.Deselect();
+		});
+	}
+	Board.input.prototype.Deselect=function(){
+		this.dom.setAttribute("stroke-width",5);
+		$(document.body).unbind("click",this.Deselect);
 		$(document.body).unbind("keydown",Board.input.deleteKeyPress);
 	}
 	Board.input.deleteKeyPress=function(e){
 		var obj=e.data;
 		//is it delete or backspace key
 		if(e.which==8||e.which==46){
-			Board.input.clickOffLine(e);
+			obj.Deselect();
 			e.preventDefault();
 			obj.pair.Destroy(obj);
 		}
