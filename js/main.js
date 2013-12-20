@@ -113,48 +113,61 @@
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 	}
+	Board.componentSelector.checkForSelection=function(circuit){
+		var fromX=(circuit.dragData.startX<circuit.dragData.x)?circuit.dragData.startX:circuit.dragData.x,
+			toX=(circuit.dragData.startX<circuit.dragData.x)?circuit.dragData.x:circuit.dragData.startX,
+			fromY=(circuit.dragData.startY<circuit.dragData.y)?circuit.dragData.startY:circuit.dragData.y,
+			toY=(circuit.dragData.startY<circuit.dragData.y)?circuit.dragData.y:circuit.dragData.startY;
+		for(var i=0;i<circuit.parts.length;i++){
+			circuit.parts[i].checkSelectStatus(fromX,fromY,toX,toY);
+		}
+	}
 	Board.componentSelector.startSelection=function(e){
 		var obj=e.data;
+		var boxesOffset=obj.componentsDom.offset();
 		obj.dragData={
-			startX:e.pageX,
-			startY:e.pageY
+			startX:e.pageX-boxesOffset.left,
+			startY:e.pageY-boxesOffset.top
 		};
 		$(".selectionBox").css({
-			"top":obj.dragData.startY,
-			"left":obj.dragData.startX
+			"top":obj.dragData.startY+boxesOffset.top,
+			"left":obj.dragData.startX+boxesOffset.left
 		});
 		$(obj.lines._svg).unbind("mousedown",Board.componentSelector.startSelection);
 		$(document.body).mousemove(obj,Board.componentSelector.changeSelection)
 						.mouseup(obj,Board.componentSelector.endSelection);
+		Board.componentSelector.checkForSelection(obj);
 	}
 	Board.componentSelector.changeSelection=function(e){
 		var obj=e.data;
-		obj.dragData.x=e.pageX;
-		obj.dragData.y=e.pageY;
+		var boxesOffset=obj.componentsDom.offset();
+		obj.dragData.x=e.pageX-boxesOffset.left;
+		obj.dragData.y=e.pageY-boxesOffset.top;
 		if(obj.dragData.x<obj.dragData.startX){
 			$(".selectionBox").css({
-				"left":obj.dragData.x + "px",
+				"left":obj.dragData.x+boxesOffset.left + "px",
 				"width":obj.dragData.startX-obj.dragData.x + "px"
 			});
 		}
 		else{
 			$(".selectionBox").css({
-				"left":obj.dragData.startX + "px",
+				"left":obj.dragData.startX+boxesOffset.left + "px",
 				"width":obj.dragData.x-obj.dragData.startX + "px"
 			});
 		}
 		if(obj.dragData.y<obj.dragData.startY){
 			$(".selectionBox").css({
-				"top":obj.dragData.y + "px",
+				"top":obj.dragData.y+boxesOffset.top + "px",
 				"height":obj.dragData.startY-obj.dragData.y + "px"
 			});
 		}
 		else{
 			$(".selectionBox").css({
-				"top":obj.dragData.startY + "px",
+				"top":obj.dragData.startY+boxesOffset.top + "px",
 				"height":obj.dragData.y-obj.dragData.startY + "px"
 			});
 		}
+		Board.componentSelector.checkForSelection(obj);
 	}
 	Board.componentSelector.endSelection=function(e){
 		var obj=e.data;
