@@ -358,8 +358,8 @@
 		obj.clickOffsetY=undefined;
 		$(this).click(obj,function(e){
 			var obj=e.data;
-			$(this).unbind("click",e.handleObj.handler)
-			obj.dom.click(obj,Board.component.clickToSelect);
+			$(this).unbind("click",e.handleObj.handler);
+			if(obj.dom!=undefined)obj.dom.click(obj,Board.component.clickToSelect);
 		})
 	}
 	Board.component.prototype.lastDraw=0;
