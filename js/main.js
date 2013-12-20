@@ -341,8 +341,8 @@
 	Board.component.prototype.checkSelectStatus=function(fromX,fromY,toX,toY){
 		var aPos=this.dom.position();
 		var bPos={
-			"x":aPos.x+this.dom.width,
-			"y":bPos.y+this.dom.height
+			"x":aPos.x+this.dom.width(),
+			"y":aPos.y+this.dom.height()
 		}
 		if((fromX<aPos.x&&toX>aPos)||(fromX<bPos.x&&toX>bPos)){
 			if((fromX<aPos.x&&toX>aPos)||(fromX<bPos.x&&toX>bPos)){
