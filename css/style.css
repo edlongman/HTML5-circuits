@@ -56,6 +56,7 @@ body:before {
 }
 .outputNodes{
 	float:right;
+	width:0px;
 }
 .inputNode,.outputNode{
 	box-sizing:border-box;
@@ -68,6 +69,7 @@ body:before {
 }
 .outputNode{
 	float: right;
+	margin-bottom:0px;
 }
 .componentName{
 	margin-left: auto;
@@ -176,6 +178,7 @@ body:before {
 	display: block;
 	position: relative;
 	top: -5.666px;
+	margin-bottom:0px;
 }
 .componentIcon{
 	width: 30px;
