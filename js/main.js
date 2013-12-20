@@ -301,20 +301,8 @@
 			boxesOffset=obj.parent.componentsDom.offset();
 			obj.clickOffsetX=e.pageX-boxesOffset.left-obj.x;
 			obj.clickOffsetY=e.pageY-boxesOffset.top-obj.y;
-			obj.parent.componentsDom.parent().mousemove(obj,function(e) {
-				var obj=e.data;
-				boxesOffset=obj.parent.componentsDom.offset();
-				obj.x=e.pageX-obj.clickOffsetX-boxesOffset.left;
-				obj.y=e.pageY-obj.clickOffsetY-boxesOffset.top;
-				obj.Update();
-			});
-		});
-		this.parent.componentsDom.parent().mouseup(this,function(e){
-			var obj=e.data;
-			obj.dom.click(obj,Board.component.clickToSelect)
-			$(this).unbind("mousemove");
-			obj.clickOffsetX=undefined;
-			obj.clickOffsetY=undefined;
+			obj.parent.componentsDom.parent().mousemove(obj,Board.component.updateDrag);
+			obj.parent.componentsDom.parent().mouseup(obj,Board.component.stopDrag);
 		});
 		this.dom.dblclick(this,function(e){
 			var obj=e.data;
@@ -328,7 +316,7 @@
 				obj.Destroy();
 			}))
 		});
-		this.dom.click(this,Board.component.clickToSelect)
+		this.dom.click(this,Board.component.clickToSelect);
 		this.inputs.Draw(lines,this.dom,drawNo);
 		this.outputs.Draw(lines,this.dom,drawNo);
 		this.dom.append($("<div/>").addClass("componentName").text(this.name));
@@ -349,6 +337,25 @@
 		else{
 			obj.Select();
 		}
+	}
+	Board.component.updateDrag=function(e) {
+		var obj=e.data;
+		obj.dom.unbind("click",Board.component.clickToSelect);
+		boxesOffset=obj.parent.componentsDom.offset();
+		obj.x=e.pageX-obj.clickOffsetX-boxesOffset.left;
+		obj.y=e.pageY-obj.clickOffsetY-boxesOffset.top;
+		obj.Update();
+	}
+	Board.component.stopDrag=function(e){
+		var obj=e.data;
+		$(this).unbind("mousemove",Board.component.updateDrag);
+		obj.clickOffsetX=undefined;
+		obj.clickOffsetY=undefined;
+		$(this).click(obj,function(e){
+			var obj=e.data;
+			$(this).unbind("click",e.handleObj.handler)
+			obj.dom.click(obj,Board.component.clickToSelect);
+		})
 	}
 	Board.component.prototype.lastDraw=0;
 	Board.component.prototype.Update=function(lastDraw){
