@@ -110,7 +110,7 @@
 	Board.componentSelector=function(circuit){
 		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
 						.unbind("mouseup",Board.componentSelector.endSelection);
-		$(circuit.lines._svg).mousedown(obj,Board.componentSelector.startSelection);
+		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 	}
 	Board.componentSelector.startSelection=function(e){
