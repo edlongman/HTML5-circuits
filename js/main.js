@@ -146,7 +146,6 @@
 		$(obj.lines._svg).unbind("mousedown",Board.componentSelector.startSelection);
 		$(document.body).mousemove(obj,Board.componentSelector.changeSelection)
 						.mouseup(obj,Board.componentSelector.endSelection);
-		Board.componentSelector.checkForSelection(obj);
 	}
 	Board.componentSelector.changeSelection=function(e){
 		var obj=e.data;
@@ -410,6 +409,12 @@
 		else{
 			this.Deselect();
 		}
+		for(var i=0;i<this.inputs.length;i++){
+			this.inputs[i].checkSelectStatus();
+		}
+		for(var i=0;i<this.outputs.length;i++){
+			this.outputs[i].checkSelectStatus();
+		}
 	}
 	Board.component.prototype.Select=function(){
 		this.selected=true;
@@ -614,6 +619,11 @@
 		}
 		this.length--;
 	}
+	Board.output.prototype.checkSelectStatus=function(){
+		for(var i=0;i<this.length;i++){
+			this[i].checkSelectStatus();
+		}
+	}
 	
 	//input port of component
 	Board.input=function(parent){
@@ -758,6 +768,18 @@
 			if(this.pair.parent.outputs[i]==this.pair)break;
 		}
 		return this.pair.parent.output()[i];
+	}
+	Board.input.prototype.checkSelectStatus=function(){
+		if(this.pair==undefined){}
+		else if(this.parent.selected&&this.pair.parent.selected){
+			this.Select();
+		}
+		else if(this.parent.selected||this.pair.parent.selected){
+			this.Split();
+		}
+		else{
+			this.Deselect();
+		}
 	}
 	
 	//define basic gates
