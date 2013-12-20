@@ -316,6 +316,9 @@
 				obj.Destroy();
 			}))
 		});
+		this.dom.click(this,function(e){
+			debugger;
+		})
 		this.inputs.Draw(lines,this.dom,drawNo);
 		this.outputs.Draw(lines,this.dom,drawNo);
 		this.dom.append($("<div/>").addClass("componentName").text(this.name));
@@ -358,7 +361,7 @@
 			"top":aPos.top+this.dom.height()
 		}
 		if((fromX<aPos.left&&toX>aPos.left)||(fromX<bPos.left&&toX>bPos.left)){
-			if((fromX<aPos.top&&toX>aPos.top)||(fromX<bPos.top&&toX>bPos.top)){
+			if((fromY<aPos.top&&toY>aPos.top)||(fromY<bPos.top&&toY>bPos.top)){
 				//selection box and component intersect
 				this.Select();
 			}
