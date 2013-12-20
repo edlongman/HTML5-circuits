@@ -92,6 +92,7 @@
 			this.parts[i].Draw(components,lines,this.drawIteration);
 		}
 		Board.components.Draw(this);
+		Board.componentSelector(this);
 	};
 	Board.circuit.prototype.drawIteration=0;
 	Board.circuit.prototype.Update=function(){
@@ -106,6 +107,64 @@
 		}
 		Board.components.Draw(this);
 	};
+	Board.componentSelector=function(circuit){
+		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
+	}
+	Board.componentSelector.startSelection=function(e){
+		var obj=e.data;
+		obj.dragData={
+			startX:e.pageX,
+			startY:e.pageY
+		};
+		$(".selectionBox").css({
+			"top":obj.dragData.startY,
+			"left":obj.dragData.startX
+		});
+		$(obj.lines._svg).unbind("mousedown",Board.componentSelector.startSelection);
+		$(document.body).mousemove(obj,Board.componentSelector.changeSelection)
+						.mouseup(obj,Board.componentSelector.endSelection);
+	}
+	Board.componentSelector.changeSelection=function(e){
+		var obj=e.data;
+		obj.dragData.x=e.pageX;
+		obj.dragData.y=e.pageY;
+		if(obj.dragData.x<obj.dragData.startX){
+			$(".selectionBox").css({
+				"left":obj.dragData.x + "px",
+				"width":obj.dragData.startX-obj.dragData.x + "px"
+			});
+		}
+		else{
+			$(".selectionBox").css({
+				"left":obj.dragData.startX + "px",
+				"width":obj.dragData.x-obj.dragData.startX + "px"
+			});
+		}
+		if(obj.dragData.y<obj.dragData.startY){
+			$(".selectionBox").css({
+				"top":obj.dragData.y + "px",
+				"height":obj.dragData.startY-obj.dragData.y + "px"
+			});
+		}
+		else{
+			$(".selectionBox").css({
+				"top":obj.dragData.startY + "px",
+				"height":obj.dragData.y-obj.dragData.startY + "px"
+			});
+		}
+	}
+	Board.componentSelector.endSelection=function(e){
+		var obj=e.data;
+		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
+						.unbind("mouseup",Board.componentSelector.endSelection);
+		$(obj.lines._svg).mousedown(obj,Board.componentSelector.startSelection);
+		$(".selectionBox").css({
+			"left":"-2px",
+			"top":"-2px",
+			"width":"0px",
+			"height":"0px"
+		});
+	}
 	componentProperties={
 		symbol:"path/to/img.png",
 		name:"name",
