@@ -679,22 +679,39 @@
 			line.move(fromX,fromY);
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			this.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
-			$(this.dom).click(this,function(e){
-				e.stopPropagation();
-				e.data.Select();
-			})
+			$(this.dom).click(this,Board.input.clickToSelect)
+	}
+	Board.input.clickToSelect=function(e){
+		e.stopPropagation();
+		var obj=e.data;
+		if(!e.shiftKey){
+			obj.parent.parent.DeselectAll();
+		}
+		if(obj.selected){
+			obj.Deselect()
+		}
+		else{
+			obj.Select();
+		}
+		$(document.body).keydown(obj,Board.input.deleteKeyPress);
 	}
 	Board.input.prototype.Select=function(){
-		$(document.body).click();
+		this.selected=true;
 		this.dom.setAttribute("stroke-width",7);
-		$(document.body).keydown(this,Board.input.deleteKeyPress);
-		$(document.body).click(this,function(e){
-				e.stopPropagation();
-				e.data.Deselect();
-		});
+		this.dom.setAttribute("stroke-opacity",1);
+		this.dom.setAttribute("stroke-dasharray","");
+	}
+	Board.input.prototype.Split=function(){
+		this.selected="split";
+		this.dom.setAttribute("stroke-width",5);
+		this.dom.setAttribute("stroke-opacity",1);
+		this.dom.setAttribute("stroke-dasharray",10);
 	}
 	Board.input.prototype.Deselect=function(){
+		this.selected=false
 		this.dom.setAttribute("stroke-width",5);
+		this.dom.setAttribute("stroke-opacity",0.9);
+		this.dom.setAttribute("stroke-dasharray","");
 		$(document.body).unbind("click",this.Deselect);
 		$(document.body).unbind("keydown",Board.input.deleteKeyPress);
 	}
