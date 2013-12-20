@@ -156,25 +156,29 @@
 		if(obj.dragData.x<obj.dragData.startX){
 			$(".selectionBox").css({
 				"left":obj.dragData.x+boxesOffset.left + "px",
-				"width":obj.dragData.startX-obj.dragData.x + "px"
+				"width":obj.dragData.startX-obj.dragData.x + "px",
+				"z-index":"0"
 			});
 		}
 		else{
 			$(".selectionBox").css({
 				"left":obj.dragData.startX+boxesOffset.left + "px",
-				"width":obj.dragData.x-obj.dragData.startX + "px"
+				"width":obj.dragData.x-obj.dragData.startX + "px",
+				"z-index":"0"
 			});
 		}
 		if(obj.dragData.y<obj.dragData.startY){
 			$(".selectionBox").css({
 				"top":obj.dragData.y+boxesOffset.top + "px",
-				"height":obj.dragData.startY-obj.dragData.y + "px"
+				"height":obj.dragData.startY-obj.dragData.y + "px",
+				"z-index":"0"
 			});
 		}
 		else{
 			$(".selectionBox").css({
 				"top":obj.dragData.startY+boxesOffset.top + "px",
-				"height":obj.dragData.y-obj.dragData.startY + "px"
+				"height":obj.dragData.y-obj.dragData.startY + "px",
+				"z-index":"0"
 			});
 		}
 		Board.componentSelector.checkForSelection(obj);
@@ -188,7 +192,8 @@
 			"left":"-2px",
 			"top":"-2px",
 			"width":"0px",
-			"height":"0px"
+			"height":"0px",
+			"z-index":"-1"
 		});
 		obj.dragData=undefined;
 	}

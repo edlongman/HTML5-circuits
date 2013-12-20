@@ -217,4 +217,5 @@ body:before {
 	position:absolute;
 	left:-2;
 	top:-2;
+	z-index: -1;
 }
