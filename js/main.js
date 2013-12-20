@@ -107,6 +107,16 @@
 		}
 		Board.components.Draw(this);
 	};
+	Board.circuit.prototype.SelectAll=function(){
+		for(var i=0;i<this.parts.length;i++){
+			this.parts[i].Select();
+		}
+	}
+	Board.circuit.prototype.DeselectAll=function(){
+		for(var i=0;i<this.parts.length;i++){
+			this.parts[i].Deselect();
+		}
+	}
 	Board.componentSelector=function(circuit){
 		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
 						.unbind("mouseup",Board.componentSelector.endSelection);
@@ -190,6 +200,7 @@
 		numberOfOutputs:1,
 		x:0,
 		y:0,
+		selected:false,
 		output:function(){
 			for(var i=0;i<this.inputs.length;i++){
 				if(this.components.inputs[i]!=undefined){
@@ -374,11 +385,13 @@
 		}
 	}
 	Board.component.prototype.Select=function(){
+		this.selected=true;
 		this.dom.css({
 			"background":"rgba(255,200,50,1)"
 		});
 	}
 	Board.component.prototype.Deselect=function(){
+		this.selected=false;
 		this.dom.css({
 			"background":""
 		});
