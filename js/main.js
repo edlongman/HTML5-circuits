@@ -108,6 +108,9 @@
 		Board.components.Draw(this);
 	};
 	Board.componentSelector=function(circuit){
+		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
+						.unbind("mouseup",Board.componentSelector.endSelection);
+		$(circuit.lines._svg).mousedown(obj,Board.componentSelector.startSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 	}
 	Board.componentSelector.startSelection=function(e){
@@ -164,6 +167,7 @@
 			"width":"0px",
 			"height":"0px"
 		});
+		obj.dragData=undefined;
 	}
 	componentProperties={
 		symbol:"path/to/img.png",
