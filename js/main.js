@@ -475,8 +475,10 @@
 	Board.pointer.catchMouseUp=function(e) {
 		Board.pointer.Destroy();
 		$(this).unbind("mouseup",e.handleObj.handler);
+		$(this).unbind("mousemove",Board.pointer.Update);
 	}
 	Board.pointer.Update=function(e){
+		e.stopPropagation();
 		var lines=Board.pointer.pair.parent.parent.lines,
 			componentsDom=Board.pointer.pair.parent.parent.componentsDom,
 			drawNo=(Board.pointer.pair.parent.parent.drawIteration++);
@@ -563,11 +565,7 @@
 			e.stopPropagation();
 			obj.connect(Board.pointer);
 			Board.pointer.Draw(e);
-			obj.parent.parent.componentsDom.parent().mousemove(this,function(e){
-				obj=e.data;
-				e.stopPropagation();
-				Board.pointer.Update(e);
-			});
+			obj.parent.parent.componentsDom.parent().mousemove(this,Board.pointer.Update);;
 			componentDom.mouseup(function(){
 				$(this).unbind("mousemove");
 				$(this).unbind("mouseup",e.handleObj.handler);
@@ -631,11 +629,7 @@
 			e.stopPropagation();
 			Board.pointer.connect(obj);
 			Board.pointer.Draw(e);
-			obj.parent.parent.componentsDom.parent().mousemove(this,function(e){
-				obj=e.data;
-				e.stopPropagation();
-				Board.pointer.Update(e);
-			});
+			obj.parent.parent.componentsDom.parent().mousemove(this,Board.pointer.Update);
 			componentDom.mouseup(function(){
 				$(this).unbind("mousemove");
 				$(this).unbind("mouseup",e.handleObj.handler);
