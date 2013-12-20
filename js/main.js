@@ -338,6 +338,35 @@
 		this.dom.remove();
 		this.dom=undefined;
 	}
+	Board.component.prototype.checkSelectStatus=function(fromX,fromY,toX,toY){
+		var aPos=this.dom.position();
+		var bPos={
+			"x":aPos.x+this.dom.width,
+			"y":bPos.y+this.dom.height
+		}
+		if((fromX<aPos.x&&toX>aPos)||(fromX<bPos.x&&toX>bPos)){
+			if((fromX<aPos.x&&toX>aPos)||(fromX<bPos.x&&toX>bPos)){
+				//selection box and component intersect
+				this.Select();
+			}
+			else{
+				this.Deselect();
+			}
+		}
+		else{
+			this.Deselect();
+		}
+	}
+	Board.component.prototype.Select=function(){
+		this.dom.css({
+			"background":"rgba(255,200,50,1)"
+		});
+	}
+	Board.component.prototype.Deselect=function(){
+		this.dom.css({
+			"background":""
+		});
+	}
 	
 	Board.pointer={};
 	Board.pointer.connect=function(from){
