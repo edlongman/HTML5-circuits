@@ -311,6 +311,7 @@
 		});
 		this.parent.componentsDom.parent().mouseup(this,function(e){
 			var obj=e.data;
+			obj.dom.click(obj,Board.component.clickToSelect)
 			$(this).unbind("mousemove");
 			obj.clickOffsetX=undefined;
 			obj.clickOffsetY=undefined;
@@ -327,14 +328,28 @@
 				obj.Destroy();
 			}))
 		});
-		this.dom.click(this,function(e){
-			debugger;
-		})
+		this.dom.click(this,Board.component.clickToSelect)
 		this.inputs.Draw(lines,this.dom,drawNo);
 		this.outputs.Draw(lines,this.dom,drawNo);
 		this.dom.append($("<div/>").addClass("componentName").text(this.name));
 		if(this.postDraw!=undefined)this.postDraw();
 	};
+	Board.component.clickToSelect=function(e){
+		var obj=e.data;
+		if(obj.clickOffsetX!=undefined){
+			//must have just finished drag so ignore
+			return;
+		}
+		if(!e.shiftKey){
+			obj.parent.DeselectAll();
+		}
+		if(obj.selected){
+			obj.Deselect()
+		}
+		else{
+			obj.Select();
+		}
+	}
 	Board.component.prototype.lastDraw=0;
 	Board.component.prototype.Update=function(lastDraw){
 		if(lastDraw!=undefined&&this.lastDraw==lastDraw)return;
