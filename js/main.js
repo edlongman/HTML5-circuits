@@ -122,6 +122,7 @@
 						.unbind("mouseup",Board.componentSelector.endSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
+		$(circuit.lines._svg).click(circuit,Board.componentSelector.deselectOnClick);
 	}
 	Board.componentSelector.checkForSelection=function(circuit){
 		var fromX=(circuit.dragData.startX<circuit.dragData.x)?circuit.dragData.startX:circuit.dragData.x,
@@ -132,8 +133,13 @@
 			circuit.parts[i].checkSelectStatus(fromX,fromY,toX,toY);
 		}
 	}
+	Board.componentSelector.deselectOnClick=function(e){
+		obj=e.data;
+		obj.DeselectAll();
+	}
 	Board.componentSelector.startSelection=function(e){
 		var obj=e.data;
+		e.stopPropagation();
 		var boxesOffset=obj.componentsDom.offset();
 		obj.dragData={
 			startX:e.pageX-boxesOffset.left,
@@ -184,6 +190,7 @@
 	}
 	Board.componentSelector.endSelection=function(e){
 		var obj=e.data;
+		e.stopPropagation();
 		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
 						.unbind("mouseup",Board.componentSelector.endSelection);
 		$(obj.lines._svg).mousedown(obj,Board.componentSelector.startSelection);
@@ -427,6 +434,9 @@
 		this.dom.css({
 			"background":""
 		});
+		for(var i=0;i<this.inputs.length;i++){
+			this.inputs[i].Deselect();
+		}
 	}
 	
 	Board.pointer={};
