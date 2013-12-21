@@ -729,9 +729,11 @@
 	}
 	Board.input.prototype.Deselect=function(){
 		this.selected=false
-		this.dom.setAttribute("stroke-width",5);
-		this.dom.setAttribute("stroke-opacity",0.9);
-		this.dom.setAttribute("stroke-dasharray","");
+		if(this.dom!=undefined){
+			this.dom.setAttribute("stroke-width",5);
+			this.dom.setAttribute("stroke-opacity",0.9);
+			this.dom.setAttribute("stroke-dasharray","");
+		}
 		$(document.body).unbind("click",this.Deselect);
 		$(document.body).unbind("keydown",Board.input.deleteKeyPress);
 	}
