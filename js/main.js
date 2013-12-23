@@ -428,6 +428,12 @@
 		this.dom.css({
 			"background":"rgba(255,200,50,1)"
 		});
+		for(var i=0;i<this.inputs.length;i++){
+			this.inputs[i].checkSelectStatus();
+		}
+		for(var i=0;i<this.outputs.length;i++){
+			this.outputs[i].checkSelectStatus();
+		}
 	}
 	Board.component.prototype.Deselect=function(){
 		this.selected=false;
@@ -435,7 +441,10 @@
 			"background":""
 		});
 		for(var i=0;i<this.inputs.length;i++){
-			this.inputs[i].Deselect();
+			this.inputs[i].checkSelectStatus();
+		}
+		for(var i=0;i<this.outputs.length;i++){
+			this.outputs[i].checkSelectStatus();
 		}
 	}
 	
