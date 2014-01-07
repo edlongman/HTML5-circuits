@@ -151,6 +151,7 @@ body:before {
 	background: #AAA;
 	float: right;
 	margin: 10px;
+	margin-bottom: 0px;
 	border-top: #DDD 19.33px solid;
 	box-sizing: border-box;
 	border-left: #DDD 2px solid;
