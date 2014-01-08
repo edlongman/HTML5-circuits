@@ -223,3 +223,16 @@ body:before {
 	top:-2;
 	z-index: -1;
 }
+
+.menu{
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	height: 30px;
+	background: #888;
+	padding: 5px 15px;
+	display: none;
+}
+.menuItem{
+	
+}

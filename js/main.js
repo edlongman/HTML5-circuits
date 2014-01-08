@@ -593,7 +593,7 @@
 		this.dom.fadeOut(200);
 	};
 	Board.menu.show=function(){
-		if(this.dom==undifined)return;
+		if(this.dom==undefined)return;
 		this.dom.fadeIn();
 	};
 	Board.menu.Draw=function(){
