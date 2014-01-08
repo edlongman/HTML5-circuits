@@ -1,6 +1,6 @@
 //One object to rule them all
 (function(window, undefined) {
-	$(".linescontainer").svg()
+	$(".linescontainer").svg();
 	Board={};
 	Board.components=[];
 	Board.components.get=function(name){
@@ -9,7 +9,7 @@
 				return new Board.component(Board.components[i]);
 			}
 		}
-	}
+	};
 	Board.components.Draw=function(circuit){
 		var componentsBox=$(document.body).find(".components");
 		componentsBox.html("");
@@ -32,7 +32,7 @@
 			basicItem.append(componentIcon,componentName,componentDragPoint);
 			componentsBox.append(basicItem);
 		}
-	}
+	};
 	//holds positions of components
 	Board.circuit=function(components){
 		this.parts=[];
@@ -55,7 +55,7 @@
 		for(var i=0;i<noOfOutputs;i++){
 			this.outputs.push(new Board.components.get("output"));
 		}
-	}
+	};
 	Board.circuit.prototype.addComponent=function(component){
 		this.parts.push(component);
 		component.parent=this;
@@ -82,7 +82,7 @@
 		return (min<arg)?arg:min;
 	}
 	Board.circuit.prototype.Draw=function(domElement){
-		this.drawIteration++
+		this.drawIteration++;
 		var components=$(domElement).find("div");
 		this.componentsDom=components;
 		var lines=$(".linescontainer").svg("get");
@@ -96,10 +96,10 @@
 	};
 	Board.circuit.prototype.drawIteration=0;
 	Board.circuit.prototype.Update=function(){
-		this.drawIteration++
+		this.drawIteration++;
 		for(var i=0;i<this.parts.length;i++){
 			if(this.parts[i].dom==undefined){
-				this.parts[i].Draw(this.componentsDom,this.lines,this.drawIteration)
+				this.parts[i].Draw(this.componentsDom,this.lines,this.drawIteration);
 			}
 			else{
 				this.parts[i].Update(this.drawIteration);
@@ -111,19 +111,19 @@
 		for(var i=0;i<this.parts.length;i++){
 			this.parts[i].Select();
 		}
-	}
+	};
 	Board.circuit.prototype.DeselectAll=function(){
 		for(var i=0;i<this.parts.length;i++){
 			this.parts[i].Deselect();
 		}
-	}
+	};
 	Board.componentSelector=function(circuit){
 		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
 						.unbind("mouseup",Board.componentSelector.endSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 		$(circuit.lines._svg).click(circuit,Board.componentSelector.deselectOnClick);
-	}
+	};
 	Board.componentSelector.checkForSelection=function(circuit){
 		var fromX=(circuit.dragData.startX<circuit.dragData.x)?circuit.dragData.startX:circuit.dragData.x,
 			toX=(circuit.dragData.startX<circuit.dragData.x)?circuit.dragData.x:circuit.dragData.startX,
@@ -132,11 +132,11 @@
 		for(var i=0;i<circuit.parts.length;i++){
 			circuit.parts[i].checkSelectStatus(fromX,fromY,toX,toY);
 		}
-	}
+	};
 	Board.componentSelector.deselectOnClick=function(e){
 		obj=e.data;
 		obj.DeselectAll();
-	}
+	};
 	Board.componentSelector.startSelection=function(e){
 		var obj=e.data;
 		e.stopPropagation();
@@ -152,7 +152,7 @@
 		$(obj.lines._svg).unbind("mousedown",Board.componentSelector.startSelection);
 		$(document.body).mousemove(obj,Board.componentSelector.changeSelection)
 						.mouseup(obj,Board.componentSelector.endSelection);
-	}
+	};
 	Board.componentSelector.changeSelection=function(e){
 		var obj=e.data;
 		var boxesOffset=obj.componentsDom.offset();
@@ -187,7 +187,7 @@
 			});
 		}
 		Board.componentSelector.checkForSelection(obj);
-	}
+	};
 	Board.componentSelector.endSelection=function(e){
 		var obj=e.data;
 		e.stopPropagation();
@@ -202,7 +202,7 @@
 			"z-index":"-1"
 		});
 		obj.dragData=undefined;
-	}
+	};
 	componentProperties={
 		symbol:"path/to/img.png",
 		name:"name",
@@ -226,8 +226,8 @@
 			}
 			return result;
 		}
-	}
-	Board.component=function(){}
+	};
+	Board.component=function(){};
 	Board.component=function(properties){
 		var propertyKeys=Object.keys(properties);
 		for(var i=0;i<propertyKeys.length;i++){
@@ -256,12 +256,12 @@
 			for(var i=0;i<this.length;i++){
 				this[i].Draw(lines,componentDom,connectionNodes,drawNo);
 			}
-		}
+		};
 		this.inputs.Update=function(lastDraw){
 			for(var i=0;i<this.length;i++){
 				this[i].Update(lastDraw);
 			}
-		}
+		};
 		this.outputs=[];
 		for(var i=0;i<this.numberOfOutputs;i++){
 			this.outputs.push(new Board.output(this));
@@ -273,14 +273,14 @@
 			for(var i=0;i<this.length;i++){
 				this[i].Draw(lines,componentDom,connectionNodes,drawNo);
 			}
-		}
+		};
 		this.outputs.Update=function(lastDraw){
 			for(var i=0;i<this.length;i++){
 				this[i].Update(lastDraw);
 			}
-		}
+		};
 		return this;
-	}
+	};
 	//get first un-taken output and if there is none then take the first
 	Board.component.prototype.getFirstOutput=function(){
 		for(var i=0;i<this.outputs.length;i++){
@@ -289,7 +289,7 @@
 			}
 		}
 		return this.outputs[0];
-	}
+	};
 	//get first un-taken input and if there is none then take the first
 	Board.component.prototype.getFirstInput=function(){
 		for(var i=0;i<this.inputs.length;i++){
@@ -298,7 +298,7 @@
 			}
 		}
 		return this.inputs[0];
-	}
+	};
 	Board.component.prototype.Draw=function(boxes,lines,drawNo){
 		if(this.lastDraw==drawNo)return;
 		this.lastDraw=drawNo;
@@ -322,10 +322,10 @@
 					e.data.dom.find(".deleteComponent").remove();
 				}
 				$(this).unbind("click",e.handleObj.handler);
-			})
+			});
 			obj.dom.append($("<div/>").addClass("deleteComponent").click(obj,function(){
 				obj.Destroy();
-			}))
+			}));
 		});
 		this.dom.click(this,Board.component.clickToSelect);
 		this.inputs.Draw(lines,this.dom,drawNo);
@@ -343,12 +343,12 @@
 			obj.parent.DeselectAll();
 		}
 		if(obj.selected){
-			obj.Deselect()
+			obj.Deselect();
 		}
 		else{
 			obj.Select();
 		}
-	}
+	};
 	Board.component.updateDrag=function(e) {
 		var obj=e.data;
 		obj.dom.unbind("click",Board.component.clickToSelect);
@@ -356,7 +356,7 @@
 		obj.x=e.pageX-obj.clickOffsetX-boxesOffset.left;
 		obj.y=e.pageY-obj.clickOffsetY-boxesOffset.top;
 		obj.Update();
-	}
+	};
 	Board.component.stopDrag=function(e){
 		var obj=e.data;
 		$(this).unbind("mousemove",Board.component.updateDrag);
@@ -366,8 +366,8 @@
 			var obj=e.data;
 			$(this).unbind("click",e.handleObj.handler);
 			if(obj.dom!=undefined)obj.dom.click(obj,Board.component.clickToSelect);
-		})
-	}
+		});
+	};
 	Board.component.prototype.lastDraw=0;
 	Board.component.prototype.Update=function(lastDraw){
 		if(lastDraw!=undefined&&this.lastDraw==lastDraw)return;
@@ -376,7 +376,7 @@
 		this.dom.css({
 			"left":this.x,
 			"top":this.y
-		})
+		});
 		this.inputs.Update(this.lastDraw);
 		this.outputs.Update(this.lastDraw);
 		if(this.postUpdate!=undefined)this.postUpdate();
@@ -397,13 +397,13 @@
 		this.parent.removeComponent(this);
 		this.dom.remove();
 		this.dom=undefined;
-	}
+	};
 	Board.component.prototype.checkSelectStatus=function(fromX,fromY,toX,toY){
 		var aPos=this.dom.position();
 		var bPos={
 			"left":aPos.left+this.dom.width(),
 			"top":aPos.top+this.dom.height()
-		}
+		};
 		if((fromX<aPos.left&&toX>aPos.left)||(fromX<bPos.left&&toX>bPos.left)){
 			if((fromY<aPos.top&&toY>aPos.top)||(fromY<bPos.top&&toY>bPos.top)){
 				//selection box and component intersect
@@ -422,7 +422,7 @@
 		for(var i=0;i<this.outputs.length;i++){
 			this.outputs[i].checkSelectStatus();
 		}
-	}
+	};
 	Board.component.prototype.Select=function(){
 		this.selected=true;
 		this.dom.css({
@@ -434,7 +434,7 @@
 		for(var i=0;i<this.outputs.length;i++){
 			this.outputs[i].checkSelectStatus();
 		}
-	}
+	};
 	Board.component.prototype.Deselect=function(){
 		this.selected=false;
 		this.dom.css({
@@ -446,7 +446,7 @@
 		for(var i=0;i<this.outputs.length;i++){
 			this.outputs[i].checkSelectStatus();
 		}
-	}
+	};
 	
 	Board.pointer={};
 	Board.pointer.connect=function(from){
@@ -462,15 +462,15 @@
 		if(Board.pointer.pair.__proto__==Board.input.prototype){
 			from.connect(Board.pointer);
 		}
-	}
+	};
 	Board.pointer.x=function(e,componentsDom){
 		var boxesOffset=componentsDom.offset();
 		return e.pageX-boxesOffset.left;
-	}
+	};
 	Board.pointer.y=function(e,componentsDom){
 		var boxesOffset=componentsDom.offset();
 		return e.pageY-boxesOffset.top;
-	}
+	};
 	Board.pointer.Draw=function(e){
 		var lines=Board.pointer.pair.parent.parent.lines,
 			componentsDom=Board.pointer.pair.parent.parent.componentsDom,
@@ -507,12 +507,12 @@
 			Board.pointer.pair.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
 		}
 		componentsDom.parent().mouseup(componentsDom,Board.pointer.catchMouseUp);
-	}
+	};
 	Board.pointer.catchMouseUp=function(e) {
 		Board.pointer.Destroy();
 		$(this).unbind("mouseup",e.handleObj.handler);
 		$(this).unbind("mousemove",Board.pointer.Update);
-	}
+	};
 	Board.pointer.Update=function(e){
 		e.stopPropagation();
 		var lines=Board.pointer.pair.parent.parent.lines,
@@ -549,7 +549,7 @@
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			Board.pointer.pair.dom.setAttribute("d",line._path);
 		}
-	}
+	};
 	Board.pointer.Destroy=function(){
 		if(Board.pointer.pair.__proto__==Board.output.prototype){
 			Board.pointer.dom.remove();
@@ -572,26 +572,26 @@
 			Board.pointer.pair.pair=undefined;
 			Board.pointer.pair=undefined;
 		}
-	}
+	};
 	
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
 		this.length=0;
 		return this;
-	}
+	};
 	Board.output.prototype.connect=function(to){
 		to.connect(this);
 		this[this.length]=to;
 		this.length++;
-	}
+	};
 	Board.output.prototype.x=function(){
 		return this.parent.x+100;
-	}
+	};
 	Board.output.prototype.y=function(){
 		var outputNo=this.parent.outputs.indexOf(this);
 		return this.parent.y+20+outputNo*30;
-	}
+	};
 	Board.output.prototype.Draw=function(lines,componentDom,outputsDom,drawNo){
 		//draw node
 		var connectionNode=$("<div/>").addClass("outputNode");
@@ -616,13 +616,13 @@
 				obj.parent.parent.componentsDom.parent().unbind("mouseup",Board.pointer.catchMouseUp);
 				obj.parent.Update();
 			}
-		})
-	}
+		});
+	};
 	Board.output.prototype.Update=function(lastDraw){
 		for(var i=0;i<this.length;i++){
 			this[i].Update(lastDraw);
 		}
-	}
+	};
 	Board.output.prototype.Destroy=function(pair){
 		for(var i=0;i<this.length;i++){
 			if(this[i]==pair){
@@ -637,29 +637,29 @@
 			}
 		}
 		this.length--;
-	}
+	};
 	Board.output.prototype.checkSelectStatus=function(){
 		for(var i=0;i<this.length;i++){
 			this[i].checkSelectStatus();
 		}
-	}
+	};
 	
 	//input port of component
 	Board.input=function(parent){
 		this.parent=parent;
 		return this;
-	}
+	};
 	Board.input.prototype.connect=function(from){
 		if(this.pair!=undefined)this.pair.Destroy(this);
 		this.pair=from;
-	}
+	};
 	Board.input.prototype.x=function(){
 		return this.parent.x+20;
-	}
+	};
 	Board.input.prototype.y=function(){
 		var inputNo=this.parent.inputs.indexOf(this);
 		return this.parent.y+20+inputNo*30;
-	}
+	};
 	Board.input.prototype.Draw=function(lines,componentDom,inputsDom,drawNo){
 		//draw node
 		var connectionNode=$("<div/>").addClass("inputNode");
@@ -674,7 +674,7 @@
 			componentDom.mouseup(function(){
 				$(this).unbind("mousemove");
 				$(this).unbind("mouseup",e.handleObj.handler);
-			})
+			});
 		});
 		connectionNode.mouseup(this,function(e){
 			var obj=e.data;
@@ -687,13 +687,13 @@
 				obj.parent.parent.componentsDom.parent().unbind("mouseup",Board.pointer.catchMouseUp);
 				obj.parent.Update();
 			}
-		})
+		});
 		
 		//draw connection
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
-			this.DrawLine(lines)
+			this.DrawLine(lines);
 		}
-	}
+	};
 	Board.input.prototype.DrawLine=function(lines){
 			//draw line from this to other component
 			var fromX=this.pair.x(),
@@ -708,8 +708,8 @@
 			line.move(fromX,fromY);
 			line.curveC(control1,fromY,control2,toY,toX,toY);
 			this.dom=lines.path(line,{fill:"none",stroke:"black",strokeWidth:5});
-			$(this.dom).click(this,Board.input.clickToSelect)
-	}
+			$(this.dom).click(this,Board.input.clickToSelect);
+	};
 	Board.input.clickToSelect=function(e){
 		e.stopPropagation();
 		var obj=e.data;
@@ -717,27 +717,27 @@
 			obj.parent.parent.DeselectAll();
 		}
 		if(obj.selected){
-			obj.Deselect()
+			obj.Deselect();
 		}
 		else{
 			obj.Select();
 		}
 		$(document.body).keydown(obj,Board.input.deleteKeyPress);
-	}
+	};
 	Board.input.prototype.Select=function(){
 		this.selected=true;
 		this.dom.setAttribute("stroke-width",7);
 		this.dom.setAttribute("stroke-opacity",1);
 		this.dom.setAttribute("stroke-dasharray","");
-	}
+	};
 	Board.input.prototype.Split=function(){
 		this.selected="split";
 		this.dom.setAttribute("stroke-width",5);
 		this.dom.setAttribute("stroke-opacity",1);
 		this.dom.setAttribute("stroke-dasharray",10);
-	}
+	};
 	Board.input.prototype.Deselect=function(){
-		this.selected=false
+		this.selected=false;
 		if(this.dom!=undefined){
 			this.dom.setAttribute("stroke-width",5);
 			this.dom.setAttribute("stroke-opacity",0.9);
@@ -745,7 +745,7 @@
 		}
 		$(document.body).unbind("click",this.Deselect);
 		$(document.body).unbind("keydown",Board.input.deleteKeyPress);
-	}
+	};
 	Board.input.deleteKeyPress=function(e){
 		var obj=e.data;
 		//is it delete or backspace key
@@ -754,7 +754,7 @@
 			e.preventDefault();
 			obj.pair.Destroy(obj);
 		}
-	}
+	};
 	Board.input.prototype.Update=function(lastDraw){
 		this.parent.Update(lastDraw);
 		//update connection
@@ -781,7 +781,7 @@
 		this.pair=undefined;
 		if(this.dom!=undefined)this.dom.remove();
 		this.dom=undefined;
-	}
+	};
 	Board.input.prototype.lastDraw=0;
 	Board.input.prototype.output=function(){
 		if(this.pair==undefined)return false;
@@ -789,7 +789,7 @@
 			if(this.pair.parent.outputs[i]==this.pair)break;
 		}
 		return this.pair.parent.output()[i];
-	}
+	};
 	Board.input.prototype.checkSelectStatus=function(){
 		if(this.pair==undefined){}
 		else if(this.parent.selected&&this.pair.parent.selected){
@@ -801,7 +801,7 @@
 		else{
 			this.Deselect();
 		}
-	}
+	};
 	
 	//define basic gates
 	//
@@ -816,7 +816,7 @@
 		name:"and",
 		numberOfInputs:2,
 		output:function(input,input2){
-			return [this.inputs[0].output()&&this.inputs[1].output()]
+			return [this.inputs[0].output()&&this.inputs[1].output()];
 		}
 	}));
 	Board.components.push(new Board.component({
