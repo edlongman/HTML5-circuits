@@ -140,6 +140,13 @@
 	Board.componentSelector.startSelection=function(e){
 		var obj=e.data;
 		e.stopPropagation();
+		Board.menu.empty();
+		Board.menu.addOption({
+			name: "Extract",
+			callback: Board.componentSelector.extractSelected
+		});
+		Board.menu.Draw();
+		Board.menu.show();
 		var boxesOffset=obj.componentsDom.offset();
 		obj.dragData={
 			startX:e.pageX-boxesOffset.left,
@@ -202,6 +209,9 @@
 			"z-index":"-1"
 		});
 		obj.dragData=undefined;
+	};
+	Board.componentSelector.extractSelected=function(){
+		
 	};
 	componentProperties={
 		symbol:"path/to/img.png",
