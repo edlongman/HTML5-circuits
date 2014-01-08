@@ -574,6 +574,39 @@
 		}
 	};
 	
+	Board.menu={};
+	Board.menu.options=[];
+	Board.menu.addOption=function(options){
+		if(options.length){
+			for(var i=0;i<options.length;i++){
+				this.addOption(options[i]);
+			}
+		}
+		this.options.push(options);
+	};
+	Board.menu.empty=function(){
+		this.options=[];
+		this.hide();
+	};
+	Board.menu.hide=function(){
+		if(this.dom==undefined){return;}
+		this.dom.fadeOut(200);
+	};
+	Board.menu.show=function(){
+		if(this.dom==undifined)return;
+		this.dom.fadeIn();
+	};
+	Board.menu.Draw=function(){
+		this.dom=$(".menu");
+		this.dom.html("");
+		for(var i=0;i<this.options.length;i++){
+			this.dom.append($("<div/>").addClass("menuItem")
+										.text(this.options[i].name)
+										.click(this.options[i].callback));
+		}
+	};
+		
+		
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
