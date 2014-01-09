@@ -121,7 +121,6 @@
 		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
 						.unbind("mouseup",Board.componentSelector.endSelection);
 		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
-		$(circuit.lines._svg).mousedown(circuit,Board.componentSelector.startSelection);
 		$(circuit.lines._svg).click(circuit,Board.componentSelector.deselectOnClick);
 	};
 	Board.componentSelector.checkForSelection=function(circuit){
