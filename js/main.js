@@ -118,16 +118,16 @@
 		}
 	};
 	
-	Board.selection=function(){
-		return {"parts":[]};
+	Board.selection={
+		"parts":[]
 	};
-	Board.selector.add=function(what){
+	Board.selection.add=function(what){
 		for(var i=0;i<this.parts.length;i++){
 			if(this.parts.length==what)return;
 		}
 		this.parts.push(what);
 	};
-	Board.selector.remove=function(what){
+	Board.selection.remove=function(what){
 		for(var i=0;i<this.parts.length;i++){
 			if(this.parts.length==what)break;
 		}
@@ -459,6 +459,7 @@
 		}
 	};
 	Board.component.prototype.Select=function(){
+		Board.selection.add(this);
 		this.selected=true;
 		this.dom.css({
 			"background":"rgba(255,200,50,1)"
@@ -471,6 +472,7 @@
 		}
 	};
 	Board.component.prototype.Deselect=function(){
+		Board.selection.remove(this);
 		this.selected=false;
 		this.dom.css({
 			"background":""
