@@ -228,15 +228,14 @@
 			"z-index":"-1"
 		});
 		obj.dragData=undefined;
+		this.extractSelection();
 	};
 	Board.componentSelector.extractSelected=function(circuit){
-		var selectedNodes=new Board.selection();
 		for(var i=0;i<circuit.parts.length;i++){
 			if(circuit.parts[i].selected){
-				selectedNodes.add(circuit.parts[i]);
+				Board.selection.add(circuit.parts[i]);
 			}
 		}
-		return selectedNodes;
 	};
 	componentProperties={
 		symbol:"path/to/img.png",
