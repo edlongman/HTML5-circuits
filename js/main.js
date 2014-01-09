@@ -117,6 +117,26 @@
 			this.parts[i].Deselect();
 		}
 	};
+	
+	Board.selection=function(){
+		return {"parts":[]};
+	};
+	Board.selector.add=function(what){
+		for(var i=0;i<this.parts.length;i++){
+			if(this.parts.length==what)return;
+		}
+		this.parts.push(what);
+	};
+	Board.selector.remove=function(what){
+		for(var i=0;i<this.parts.length;i++){
+			if(this.parts.length==what)break;
+		}
+		this.parts.remove(i);
+	};
+	Board.selection.count=function(){
+		return this.parts.length
+	};
+	
 	Board.componentSelector=function(circuit){
 		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
 						.unbind("mouseup",Board.componentSelector.endSelection);
@@ -209,8 +229,14 @@
 		});
 		obj.dragData=undefined;
 	};
-	Board.componentSelector.extractSelected=function(){
-		
+	Board.componentSelector.extractSelected=function(circuit){
+		var selectedNodes=new Board.selection();
+		for(var i=0;i<circuit.parts.length;i++){
+			if(circuit.parts[i].selected){
+				selectedNodes.add(circuit.parts[i]);
+			}
+		}
+		return selectedNodes;
 	};
 	componentProperties={
 		symbol:"path/to/img.png",
