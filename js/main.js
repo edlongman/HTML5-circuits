@@ -162,7 +162,7 @@
 		Board.menu.empty();
 		Board.menu.addOption({
 			name: "Extract",
-			callback: Board.componentSelector.extractSelected
+			callback: Board.selection.extract
 		});
 		Board.menu.Draw();
 		Board.menu.show();
@@ -228,7 +228,7 @@
 			"z-index":"-1"
 		});
 		obj.dragData=undefined;
-		this.extractSelection();
+		Board.componentSelector.extractSelected(obj);
 	};
 	Board.componentSelector.extractSelected=function(circuit){
 		for(var i=0;i<circuit.parts.length;i++){
