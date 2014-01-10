@@ -126,7 +126,28 @@
 		return (this.parts.indexOf(part)!=-1);
 	};
 	Board.selection.extract=function(){
+		//get broken inputs
+		var inputs=[],
+			outputs=[],
+			componentCircuit=new Board.circuit(Board.selection.parts);
+		for(var i=0;i<componentCircuit.parts.length;i++){
+			var part=componentCircuit.parts[i];
+			for(var ii=0;ii<part.inputs.length;ii++){
+				if(part.inputs[ii].selected=="split"){
+					inputs.push(part.inputs[ii]);
+				}
+			}
+			for(var ii=0;ii<part.outputs.length;ii++){
+				for(var iii=0;iii<part.outputs[ii].length;iii++){
+					if(part.outputs[ii][iii].selected=="split"){
+						outputs.push(part.outputs[ii]);
+					}
+				}
+			}
+		}
 		
+		//add IO to component
+		componentCircuit.addIOProperty(inputs.length,outputs.length);
 	};
 	Board.selection.add=function(what){
 		Board.selection.remove(what);
