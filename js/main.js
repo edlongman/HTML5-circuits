@@ -122,19 +122,24 @@
 		"parts":[]
 	};
 	Board.selection.add=function(what){
+		Board.selection.remove(what);
 		for(var i=0;i<this.parts.length;i++){
 			if(this.parts.length==what)return;
 		}
 		this.parts.push(what);
 	};
 	Board.selection.remove=function(what){
-		for(var i=0;i<this.parts.length;i++){
-			if(this.parts.length==what)break;
+		for(var i=0;i<this.parts.length;){
+			if(this.parts[i]==what){
+				this.parts.remove(i);
+			}
+			else{
+				i++;
+			}
 		}
-		this.parts.remove(i);
 	};
 	Board.selection.count=function(){
-		return this.parts.length
+		return this.parts.length;
 	};
 	
 	Board.componentSelector=function(circuit){
@@ -228,7 +233,6 @@
 			"z-index":"-1"
 		});
 		obj.dragData=undefined;
-		Board.componentSelector.extractSelected(obj);
 	};
 	Board.componentSelector.extractSelected=function(circuit){
 		for(var i=0;i<circuit.parts.length;i++){
