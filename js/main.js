@@ -125,6 +125,9 @@
 	Board.selection.isSelected=function(part){
 		return (this.parts.indexOf(part)!=-1);
 	};
+	Board.selection.extract=function(){
+		
+	};
 	Board.selection.add=function(what){
 		Board.selection.remove(what);
 		for(var i=0;i<this.parts.length;i++){
