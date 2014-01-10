@@ -116,10 +116,14 @@
 		for(var i=0;i<this.parts.length;i++){
 			this.parts[i].Deselect();
 		}
+		Board.componentSelector.extractSelected(this);
 	};
 	
 	Board.selection={
 		"parts":[]
+	};
+	Board.selection.isSelected=function(part){
+		return (this.parts.indexOf(part)!=-1);
 	};
 	Board.selection.add=function(what){
 		Board.selection.remove(what);
@@ -164,6 +168,9 @@
 	Board.componentSelector.startSelection=function(e){
 		var obj=e.data;
 		e.stopPropagation();
+		if(!e.shiftKey){
+			obj.DeselectAll();
+		}
 		Board.menu.empty();
 		Board.menu.addOption({
 			name: "Extract",
@@ -233,11 +240,15 @@
 			"z-index":"-1"
 		});
 		obj.dragData=undefined;
+		Board.componentSelector.extractSelected(obj);
 	};
 	Board.componentSelector.extractSelected=function(circuit){
 		for(var i=0;i<circuit.parts.length;i++){
 			if(circuit.parts[i].selected){
 				Board.selection.add(circuit.parts[i]);
+			}
+			else{
+				Board.selection.remove(circuit.parts[i]);
 			}
 		}
 	};
@@ -382,9 +393,11 @@
 		}
 		if(obj.selected){
 			obj.Deselect();
+			Board.selection.remove(this);
 		}
 		else{
 			obj.Select();
+			Board.selection.add(this);
 		}
 	};
 	Board.component.updateDrag=function(e) {
@@ -442,17 +455,19 @@
 			"left":aPos.left+this.dom.width(),
 			"top":aPos.top+this.dom.height()
 		};
-		if((fromX<aPos.left&&toX>aPos.left)||(fromX<bPos.left&&toX>bPos.left)){
-			if((fromY<aPos.top&&toY>aPos.top)||(fromY<bPos.top&&toY>bPos.top)){
-				//selection box and component intersect
-				this.Select();
+		if(!Board.selection.isSelected(this)){
+			if((fromX<aPos.left&&toX>aPos.left)||(fromX<bPos.left&&toX>bPos.left)){
+				if((fromY<aPos.top&&toY>aPos.top)||(fromY<bPos.top&&toY>bPos.top)){
+					//selection box and component intersect
+					this.Select();
+				}
+				else{
+					this.Deselect();
+				}
 			}
 			else{
 				this.Deselect();
 			}
-		}
-		else{
-			this.Deselect();
 		}
 		for(var i=0;i<this.inputs.length;i++){
 			this.inputs[i].checkSelectStatus();
@@ -462,7 +477,6 @@
 		}
 	};
 	Board.component.prototype.Select=function(){
-		Board.selection.add(this);
 		this.selected=true;
 		this.dom.css({
 			"background":"rgba(255,200,50,1)"
@@ -475,7 +489,6 @@
 		}
 	};
 	Board.component.prototype.Deselect=function(){
-		Board.selection.remove(this);
 		this.selected=false;
 		this.dom.css({
 			"background":""
