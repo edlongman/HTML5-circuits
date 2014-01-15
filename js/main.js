@@ -155,6 +155,13 @@
 			if(this.parts.length==what)return;
 		}
 		this.parts.push(what);
+		Board.menu.empty();
+		Board.menu.addOption({
+			name: "Extract",
+			callback: Board.selection.extract
+		});
+		Board.menu.Draw();
+		Board.menu.show();
 	};
 	Board.selection.remove=function(what){
 		for(var i=0;i<this.parts.length;){
@@ -164,6 +171,9 @@
 			else{
 				i++;
 			}
+		}
+		if(this.count()==0){
+			Board.menu.hide();
 		}
 	};
 	Board.selection.count=function(){
@@ -195,13 +205,6 @@
 		if(!e.shiftKey){
 			obj.DeselectAll();
 		}
-		Board.menu.empty();
-		Board.menu.addOption({
-			name: "Extract",
-			callback: Board.selection.extract
-		});
-		Board.menu.Draw();
-		Board.menu.show();
 		var boxesOffset=obj.componentsDom.offset();
 		obj.dragData={
 			startX:e.pageX-boxesOffset.left,
@@ -417,11 +420,11 @@
 		}
 		if(obj.selected){
 			obj.Deselect();
-			Board.selection.remove(this);
+			Board.selection.remove(obj);
 		}
 		else{
 			obj.Select();
-			Board.selection.add(this);
+			Board.selection.add(obj);
 		}
 	};
 	Board.component.updateDrag=function(e) {
@@ -523,6 +526,7 @@
 		for(var i=0;i<this.outputs.length;i++){
 			this.outputs[i].checkSelectStatus();
 		}
+		Board.selection.remove(this);
 	};
 	
 	Board.pointer={};
