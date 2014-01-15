@@ -129,7 +129,8 @@
 		//get broken inputs
 		var inputs=[],
 			outputs=[],
-			componentCircuit=new Board.circuit(Board.selection.parts);
+			componentCircuit=new Board.circuit(Board.selection.parts),
+			newComponent;
 		for(var i=0;i<componentCircuit.parts.length;i++){
 			var part=componentCircuit.parts[i];
 			for(var ii=0;ii<part.inputs.length;ii++){
@@ -148,6 +149,12 @@
 		
 		//add IO to component
 		componentCircuit.addIOProperty(inputs.length,outputs.length);
+		newComponent=new Board.component({
+			"name":"createdComponent",
+			"numberOfInputs":inputs.length,
+			"numberOfOutputs":outputs.length,
+			"components":componentCircuit
+		});
 	};
 	Board.selection.add=function(what){
 		Board.selection.remove(what);
