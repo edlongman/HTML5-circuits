@@ -129,8 +129,39 @@
 		//get broken inputs
 		var inputs=[],
 			outputs=[],
-			componentCircuit=new Board.circuit(Board.selection.parts),
-			newComponent;
+			componentCircuit=new Board.circuit(),
+			componentToAdd,
+			newComponent,
+			outputPair,
+			inputPair;
+		function sortByY(parts){
+			if(parts.length<=1){
+				return parts;
+			}
+			var pivot=Math.ceil(parts.length/2),
+				pivotPart=parts[pivot],
+				abovePivot=[],
+				belowPivot=[],
+				sorted;
+			parts.remove(pivot);
+			for(var i=0;i<parts.length;i++){
+				if(parts[i].y()>pivotPart.y()){
+					abovePivot.push(parts[i]);
+				}
+				else{
+					belowPivot.push(parts[i]);
+				}
+			}
+			sorted=sortByY(belowPivot);
+			sorted.push(pivotPart);
+			return sorted.concat(sortByY(abovePivot));
+			
+		}
+		for(var i=0;i<Board.selection.parts.length;i++){
+			componentToAdd=$.extend({},Board.selection.parts[i]);
+			componentToAdd.dom=null;
+			componentCircuit.addComponent(componentToAdd);
+		}
 		for(var i=0;i<componentCircuit.parts.length;i++){
 			var part=componentCircuit.parts[i];
 			for(var ii=0;ii<part.inputs.length;ii++){
@@ -155,6 +186,20 @@
 			"numberOfOutputs":outputs.length,
 			"components":componentCircuit
 		});
+		inputs=sortByY(inputs);
+		outputs=sortByY(outputs);
+		for(var i=0;i<inputs.length;i++){
+			inputs[i].pair.connect(newComponent.inputs[i]);
+			componentCircuit.inputs[i].connect(inputs[i]);
+		}
+		/*for(var i=0;i<outputs.length;i++){
+			outputs[i].connect(newComponent.inputs[i]);
+			componentCircuit.inputs[i].connect(inputs[i]);
+		}*/
+		for(var i=0;i<Board.selection.count();i++){
+			Board.selection.parts[i].Destroy();
+		}
+		
 	};
 	Board.selection.add=function(what){
 		Board.selection.remove(what);
