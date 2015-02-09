@@ -118,7 +118,7 @@
 		}
 		Board.componentSelector.extractSelected(this);
 	};
-	
+
 	Board.selection={
 		"parts":[]
 	};
@@ -155,7 +155,7 @@
 			sorted=sortByY(belowPivot);
 			sorted.push(pivotPart);
 			return sorted.concat(sortByY(abovePivot));
-			
+
 		}
 		for(var i=0;i<Board.selection.parts.length;i++){
 			componentToAdd=$.extend({},Board.selection.parts[i]);
@@ -177,7 +177,7 @@
 				}
 			}
 		}
-		
+
 		//add IO to component
 		componentCircuit.addIOProperty(inputs.length,outputs.length);
 		newComponent=new Board.component({
@@ -199,7 +199,7 @@
 		for(var i=0;i<Board.selection.count();i++){
 			Board.selection.parts[i].Destroy();
 		}
-		
+
 	};
 	Board.selection.add=function(what){
 		Board.selection.remove(what);
@@ -231,7 +231,7 @@
 	Board.selection.count=function(){
 		return this.parts.length;
 	};
-	
+
 	Board.componentSelector=function(circuit){
 		$(document.body).unbind("mousemove",Board.componentSelector.changeSelection)
 						.unbind("mouseup",Board.componentSelector.endSelection);
@@ -580,7 +580,7 @@
 		}
 		Board.selection.remove(this);
 	};
-	
+
 	Board.pointer={};
 	Board.pointer.connect=function(from){
 		if(from.pair!=undefined){
@@ -698,7 +698,7 @@
 				}
 			}
 			Board.pointer.pair.length--;
-			
+
 		}
 		else{
 			Board.pointer.pair.dom.remove();
@@ -706,7 +706,7 @@
 			Board.pointer.pair=undefined;
 		}
 	};
-	
+
 	Board.menu={};
 	Board.menu.options=[];
 	Board.menu.addOption=function(options){
@@ -738,8 +738,8 @@
 										.click(this.options[i].callback));
 		}
 	};
-		
-		
+
+
 	//output port of component
 	Board.output=function(parent){
 		this.parent=parent;
@@ -809,7 +809,7 @@
 			this[i].checkSelectStatus();
 		}
 	};
-	
+
 	//input port of component
 	Board.input=function(parent){
 		this.parent=parent;
@@ -830,7 +830,7 @@
 		//draw node
 		var connectionNode=$("<div/>").addClass("inputNode");
 		inputsDom.append(connectionNode);
-		
+
 		connectionNode.mousedown(this,function(e){
 			var obj=e.data;
 			e.stopPropagation();
@@ -854,7 +854,7 @@
 				obj.parent.Update();
 			}
 		});
-		
+
 		//draw connection
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
 			this.DrawLine(lines);
@@ -927,7 +927,7 @@
 		if(this.pair!=undefined&&this.pair.parent!=undefined){
 			//init draw of other component
 			this.pair.parent.Update(lastDraw);
-			
+
 			//draw line from this to other component
 			var fromX=this.pair.x(),
 				fromY=this.pair.y(),
@@ -968,7 +968,7 @@
 			this.Deselect();
 		}
 	};
-	
+
 	//define basic gates
 	//
 	Board.components.push(new Board.component({
@@ -1038,10 +1038,10 @@
 			this.output();
 		}
 	}));
-	
-	
-	
-	
+
+
+
+
 	var testCircuit=new Board.circuit();
 	var test1=new Board.component({
 			name:"test1",
@@ -1091,5 +1091,5 @@
 	test1.outputs[0].connect(test2.inputs[0]);
 	test2.outputs[0].connect(test3.inputs[0]);
 	testCircuit.Draw($(".board")[0]);
-	
+
 })(window);
