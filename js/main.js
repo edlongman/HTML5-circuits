@@ -2,6 +2,8 @@
 (function(window, undefined) {
 	$(".linescontainer").svg();
 	Board={};
+
+	//The menu of components
 	Board.components=[];
 	Board.components.get=function(name){
 		for(var i=0;i<Board.components.length;i++){
@@ -10,6 +12,7 @@
 			}
 		}
 	};
+	//Loops through components and adds them the menu
 	Board.components.Draw=function(circuit){
 		var componentsBox=$(document.body).find(".components");
 		componentsBox.html("");
@@ -18,6 +21,7 @@
 				componentIcon=$("<div/>")
 					.addClass("componentIcon").css("backgroundImage","url("+Board.components[i].symbol+")"),
 				componentName=$("<div/>").addClass("componentName").text(Board.components[i].name),
+				//Allows the element to be created into the page
 				componentDragPoint=$("<div/>").addClass("componentDragPoint").mousedown(circuit,function(e){
 						var obj=e.data;
 						var componentToAdd=Board.components.get($(this).parent().data("componentName"));
@@ -33,7 +37,9 @@
 			componentsBox.append(basicItem);
 		}
 	};
-	//holds positions of components
+
+
+	//holds positions of components in a circuit
 	Board.circuit=function(components){
 		this.parts=[];
 		if(typeof(components)=="object"&&components.toString!="[object Object]"){
@@ -45,6 +51,7 @@
 		this.outputs=[];
 		return this;
 	};
+	//adds number of connections to a component
 	Board.circuit.prototype.addIOProperty=function(noOfInputs,noOfOutputs){
 		this.inputs=[];
 		for(var i=0;i<noOfInputs;i++){
@@ -56,6 +63,7 @@
 			this.outputs.push(new Board.components.get("output"));
 		}
 	};
+	//add/remove a component to a circuit
 	Board.circuit.prototype.addComponent=function(component){
 		this.parts.push(component);
 		component.parent=this;
@@ -66,6 +74,7 @@
 			this.parts.remove(this.parts.indexOf(component));
 		}
 	};
+	//connects an input/output together, like a physical wire connection
 	Board.circuit.prototype.addConnector=function(from,to){
 		if(from instanceof(Board.component))from=from.getFirstOutput();
 		if(to instanceof(Board.component))to=to.getFirstInput();
@@ -81,6 +90,7 @@
 	function minimum(min,arg){
 		return (min<arg)?arg:min;
 	}
+	//Draw a circuit into the sandbox on the page
 	Board.circuit.prototype.Draw=function(domElement){
 		this.drawIteration++;
 		var components=$(domElement).find("div");
@@ -95,6 +105,7 @@
 		Board.componentSelector(this);
 	};
 	Board.circuit.prototype.drawIteration=0;
+	//Refresh the status of the inputs of the board
 	Board.circuit.prototype.Update=function(){
 		this.drawIteration++;
 		for(var i=0;i<this.parts.length;i++){
@@ -107,6 +118,7 @@
 		}
 		Board.components.Draw(this);
 	};
+	//(De)Selects all elements currently in the sandbox
 	Board.circuit.prototype.SelectAll=function(){
 		for(var i=0;i<this.parts.length;i++){
 			this.parts[i].Select();
@@ -119,12 +131,17 @@
 		Board.componentSelector.extractSelected(this);
 	};
 
+	//Array storing the currently selected parts
 	Board.selection={
 		"parts":[]
 	};
 	Board.selection.isSelected=function(part){
 		return (this.parts.indexOf(part)!=-1);
 	};
+	//Remove selected components and compress them into a single component
+	//Turning all broken lines into inputs or outputs depending on if the
+	//connection terminal inside the selection is input or output
+	//Terminals inside correspond to output Terminals by Y coordinate
 	Board.selection.extract=function(){
 		//get broken inputs
 		var inputs=[],
